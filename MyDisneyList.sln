@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDisneyMovies.UI", "MyDisneyMovies.UI\MyDisneyMovies.UI.csproj", "{C822B872-CA4B-45A3-AA91-36860410E557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDisneyList.Data", "MyDisneyList.Data\MyDisneyList.Data.csproj", "{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDisneyList.Data.Tests", "MyDisneyList.Data.Tests\MyDisneyList.Data.Tests.csproj", "{6ED63C3B-B6CF-49A5-ABD6-8F33CAA1372D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C822B872-CA4B-45A3-AA91-36860410E557}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C822B872-CA4B-45A3-AA91-36860410E557}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C822B872-CA4B-45A3-AA91-36860410E557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED63C3B-B6CF-49A5-ABD6-8F33CAA1372D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED63C3B-B6CF-49A5-ABD6-8F33CAA1372D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED63C3B-B6CF-49A5-ABD6-8F33CAA1372D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED63C3B-B6CF-49A5-ABD6-8F33CAA1372D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
