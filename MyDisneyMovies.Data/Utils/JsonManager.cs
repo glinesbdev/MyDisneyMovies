@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using MyDisneyMovies.Data.Entities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 
-namespace MyDisneyList.Data.Utils
+namespace MyDisneyMovies.Data.Utils
 {
     public static class JsonManager
     {

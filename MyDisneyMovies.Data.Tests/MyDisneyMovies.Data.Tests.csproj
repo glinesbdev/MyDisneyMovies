@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>MyDisneyMovies.Data.Tests</AssemblyName>
+
+    <RootNamespace>MyDisneyMovies.Data.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyDisneyList.Data\MyDisneyList.Data.csproj" />
+    <ProjectReference Include="..\MyDisneyList.Data\MyDisneyMovies.Data.csproj" />
   </ItemGroup>
 
 </Project>

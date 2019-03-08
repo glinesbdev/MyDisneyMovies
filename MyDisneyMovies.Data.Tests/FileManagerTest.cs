@@ -1,4 +1,4 @@
-using MyDisneyList.Data.Utils;
+using MyDisneyMovies.Data.Utils;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
@@ -98,6 +98,59 @@ namespace Tests
               ""adult"": false
             },
             {
+              ""vote_average"": 0,
+              ""vote_count"": 0,
+              ""id"": 468228,
+              ""video"": false,
+              ""media_type"": ""movie"",
+              ""title"": ""The Disney of Duivendrecht"",
+              ""popularity"": 0.6,
+              ""poster_path"": ""/kJRZ38zJTLXrHd39VivTKY9Ywcp.jpg"",
+              ""original_language"": ""en"",
+              ""original_title"": ""De Duivendrechtse Disney"",
+              ""genre_ids"": [
+                99
+              ],
+              ""backdrop_path"": null,
+              ""adult"": false,
+              ""overview"": ""Documentary on the groundbreaking animation films with which the Dutch animation pioneer Joop Geesink conquered the world."",
+              ""release_date"": ""2012-09-01""
+            },
+            {
+              ""vote_average"": 5.5,
+              ""vote_count"": 2,
+              ""id"": 479098,
+              ""video"": false,
+              ""media_type"": ""movie"",
+              ""title"": ""Disney Animation Classic: Volume 6"",
+              ""popularity"": 0.6,
+              ""poster_path"": ""/7h1qirQP0XNdBWSifZCSV2c3rV5.jpg"",
+              ""original_language"": ""hu"",
+              ""original_title"": ""Disney Animation Classic: Volume 6"",
+              ""genre_ids"": [],
+              ""backdrop_path"": ""/ydaYd3gL6Oylo9sxVYkDBBReUqO.jpg"",
+              ""adult"": false,
+              ""overview"": """",
+              ""release_date"": """"
+            },
+            {
+              ""vote_average"": 10,
+              ""vote_count"": 1,
+              ""id"": 479099,
+              ""video"": false,
+              ""media_type"": ""movie"",
+              ""title"": ""Disney Animation Classic: Volume 3"",
+              ""popularity"": 0.6,
+              ""poster_path"": ""/qVwSrdntGhG5CxsTby8fddSwjUf.jpg"",
+              ""original_language"": ""hu"",
+              ""original_title"": ""Disney Animation Classic: Volume 3"",
+              ""genre_ids"": [],
+              ""backdrop_path"": ""/rrzYa3ocbY6Q1hjfupMOwyMMTDt.jpg"",
+              ""adult"": false,
+              ""overview"": """",
+              ""release_date"": """"
+            },
+            {
                 ""original_name"": ""Disney Time"",
                 ""id"": 15688,
                 ""media_type"": ""tv"",
@@ -144,7 +197,7 @@ namespace Tests
         [Test, Order(1)]
         public void WriteToFile()
         {
-            FileManager.WriteMoviesToJson(responseResult.Results.Where(movie => movie.MediaType != "person").ToList(), TempFilePath);
+            FileManager.WriteMoviesToJson(responseResult.Results.Where(movie => movie.MediaType == "movie").ToList(), TempFilePath);
 
             Assert.IsTrue(FileManager.MovieFileExists(TempFilePath));
         }
@@ -152,8 +205,8 @@ namespace Tests
         [Test, Order(2)]
         public void ReadFromFile()
         {
-            Assert.IsTrue(FileManager.ReadMoviesFromJson(TempFilePath).Any());
-            Assert.IsFalse(FileManager.ReadMoviesFromJson(TempFilePath).Any(movie => movie.MediaType == "person"));
+            Assert.IsTrue(FileManager.ReadMoviesFromJson(TempFilePath).Count == 3);
+            Assert.IsTrue(FileManager.ReadMoviesFromJson(TempFilePath).All(movie => movie.MediaType == "movie"));
         }
 
         [Test, Order(3)]

@@ -2,14 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using MyDisneyList.Data.Config;
-using MyDisneyList.Data.Entities;
+using System.Threading.Tasks;
+using MyDisneyMovies.Data.Config;
+using MyDisneyMovies.Data.Entities;
 using Newtonsoft.Json;
 
-namespace MyDisneyList.Data.Utils
+namespace MyDisneyMovies.Data.Utils
 {
     public static class ApiManager
     {
+        public static async Task<List<Movie>> GetMoviesAsync()
+        {
+            if (!FileManager.MovieFileExists())
+            {
+                return await Task.Run(() => GetMoviesViaHttp());
+            }
+
+            return await Task.Run(() => FileManager.ReadMoviesFromJson());
+        }
+
         public static List<Movie> GetMovies()
         {
             if (!FileManager.MovieFileExists())
@@ -34,7 +45,11 @@ namespace MyDisneyList.Data.Utils
                     while (page < responseResult.TotalPages)
                     {
                         responseResult = GetApiResponseResult(httpClient, page);
-                        movies.AddRange(responseResult.Results.Where(movie => movie.MediaType != "person"));
+
+                        movies.AddRange(responseResult.Results
+                            .Where(movie => movie.MediaType == "movie")
+                            .OrderBy(movie => movie.Title)
+                        );
                         page++;
                     }
 

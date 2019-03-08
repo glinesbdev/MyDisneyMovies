@@ -7,8 +7,8 @@
     <ProjectGuid>{3E274DD1-B4AC-4942-923F-821CAE8C3CA4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyDisneyList.Data</RootNamespace>
-    <AssemblyName>MyDisneyList.Data</AssemblyName>
+    <RootNamespace>MyDisneyMovies.Data</RootNamespace>
+    <AssemblyName>MyDisneyMovies.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />

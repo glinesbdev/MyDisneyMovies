@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +56,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ButtonControl.cs" />
+    <Compile Include="DataBinding\ImageConverter.cs" />
+    <Compile Include="DataBinding\SubstringConverter.cs" />
+    <Compile Include="ViewModels\MovieListViewModel.cs" />
+    <Compile Include="ViewModels\MyMoviesViewModel.cs" />
+    <Compile Include="Views\MovieListView.xaml.cs">
+      <DependentUpon>MovieListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyMoviesView.xaml.cs">
+      <DependentUpon>MyMoviesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopularMoviesView.xaml.cs">
+      <DependentUpon>PopularMoviesView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +82,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MovieListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyMoviesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopularMoviesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -93,6 +120,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyDisneyList.Data\MyDisneyMovies.Data.csproj">
+      <Project>{3e274dd1-b4ac-4942-923f-821cae8c3ca4}</Project>
+      <Name>MyDisneyMovies.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Mickey_Mouse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
