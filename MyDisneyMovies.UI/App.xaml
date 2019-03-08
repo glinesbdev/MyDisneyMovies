@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml"
              ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-        <BitmapImage x:Key="MickeyMouse" UriSource="C:\\Users\\Bradyn\\source\\repos\\MyDisneyList\\MyDisneyMovies.UI\\Resources\\Images\\Mickey_Mouse.png" />
+        <BitmapImage x:Key="MickeyMouse" UriSource="https://upload.wikimedia.org/wikipedia/pt/d/d4/Mickey_Mouse.png" />
         
         <Style TargetType="TextBlock">
             <Setter Property="TextWrapping" Value="WrapWithOverflow" />

@@ -122,18 +122,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyDisneyList.Data\MyDisneyMovies.Data.csproj">
-      <Project>{3e274dd1-b4ac-4942-923f-821cae8c3ca4}</Project>
-      <Name>MyDisneyMovies.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Mickey_Mouse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyDisneyList.Data\MyDisneyMovies.Data.csproj">
+      <Project>{3e274dd1-b4ac-4942-923f-821cae8c3ca4}</Project>
+      <Name>MyDisneyMovies.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
