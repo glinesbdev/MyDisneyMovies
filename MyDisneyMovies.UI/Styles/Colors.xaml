@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MyDisneyMovies.UI.Styles">
+
+    <Color x:Key="VeryLightGray">#f6f6f6</Color>
+    <SolidColorBrush x:Key="VeryLightGrayBrush" Color="{StaticResource VeryLightGray}" />
+
+    <Color x:Key="LightGray">#f1f1f1</Color>
+    <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGray}" />
+
+    <Color x:Key="Gray">#afafaf</Color>
+    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource Gray}" />
+
+    <Color x:Key="DisneyOrange">#fbbe4f</Color>
+    <SolidColorBrush x:Key="DisneyOrangeBrush" Color="{StaticResource DisneyOrange}" />
+
+    <Color x:Key="DisneyTeal">#76d0c0</Color>
+    <SolidColorBrush x:Key="DisneyTealBrush" Color="{StaticResource DisneyTeal}" />
+
+    <Color x:Key="DisneyGreen">#1ab28a</Color>
+    <SolidColorBrush x:Key="DisneyGreenBrush" Color="{StaticResource DisneyGreen}" />
+
+    <Color x:Key="DisneyPurple">#746bab</Color>
+    <SolidColorBrush x:Key="DisneyPurpleBrush" Color="{StaticResource DisneyPurple}" />
+
+    <Color x:Key="DisneyBlue">#4a62d8</Color>
+    <SolidColorBrush x:Key="DisneyBlueBrush" Color="{StaticResource DisneyBlue}" />
+
+</ResourceDictionary>

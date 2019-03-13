@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MyDisneyMovies.UI.Styles">
+
+    <Style x:Key="BaseTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource LightGrayBrush}" />
+    </Style>
+
+    <Style x:Key="TitleBarTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Padding" Value="3" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlock}" />
+
+</ResourceDictionary>

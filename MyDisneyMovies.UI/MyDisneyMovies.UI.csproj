@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C822B872-CA4B-45A3-AA91-36860410E557}</ProjectGuid>
+    <ProjectGuid>{8F11ABD9-4FAD-44B0-BA94-51FE4930EFFF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>MyDisneyMovies.UI</RootNamespace>
     <AssemblyName>MyDisneyMovies.UI</AssemblyName>
@@ -35,9 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Windows.Shell.3.0.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,20 +58,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\ButtonControl.cs" />
-    <Compile Include="DataBinding\ImageConverter.cs" />
-    <Compile Include="DataBinding\SubstringConverter.cs" />
-    <Compile Include="ViewModels\MovieListViewModel.cs" />
-    <Compile Include="ViewModels\MyMoviesViewModel.cs" />
-    <Compile Include="Views\MovieListView.xaml.cs">
-      <DependentUpon>MovieListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MyMoviesView.xaml.cs">
-      <DependentUpon>MyMoviesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PopularMoviesView.xaml.cs">
-      <DependentUpon>PopularMoviesView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DataModels\ApplicationPage.cs" />
+    <Compile Include="ValueConverters\ApplicationPageValueConverter.cs" />
+    <Compile Include="ValueConverters\BaseValueConverter.cs" />
+    <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\RelayCommand.cs" />
+    <Compile Include="ViewModels\Design\MainWindowDesignViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,15 +77,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\MovieListView.xaml">
+    <Page Include="Styles\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MyMoviesView.xaml">
+    <Page Include="Styles\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PopularMoviesView.xaml">
+    <Page Include="Styles\Texts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,6 +108,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -122,18 +118,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Mickey_Mouse.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MyDisneyList.Data\MyDisneyMovies.Data.csproj">
       <Project>{3e274dd1-b4ac-4942-923f-821cae8c3ca4}</Project>
       <Name>MyDisneyMovies.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\disney-castle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

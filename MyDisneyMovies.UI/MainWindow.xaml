@@ -4,54 +4,95 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyDisneyMovies.UI"
-        xmlns:viewmodels="clr-namespace:MyDisneyMovies.UI.ViewModels"
-        xmlns:views="clr-namespace:MyDisneyMovies.UI.Views"
+        xmlns:vc="clr-namespace:MyDisneyMovies.UI.ValueConverters"
         mc:Ignorable="d"
-        Title="My Disney Movies" MinHeight="500" MinWidth="700" Height="600" Width="1000" Background="MidnightBlue" TextElement.Foreground="WhiteSmoke" FontSize="16" FontFamily="Segoe UI Light">
-    <Window.Resources>
-        <DataTemplate x:Name="MovieListTemplate" DataType="{x:Type viewmodels:MovieListViewModel}">
-            <views:MovieListView DataContext="{Binding}" />
-        </DataTemplate>
-        <DataTemplate x:Name="MyListTemplate" DataType="{x:Type viewmodels:MyMoviesViewModel}">
-            <views:MyMoviesView DataContext="{Binding}" />
-        </DataTemplate>
-    </Window.Resources>
-    <!-- Grid -->
-    <Grid>
-        <!-- Grid Definitions -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        
-        <!-- Row 0 -->
-        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Quit" Click="Quit_Application" />
-            </MenuItem>
-        </Menu>
-        
-        <!-- Row 1 -->
-        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Text="My Disney Movies" HorizontalAlignment="Center" FontSize="32" />
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        MinHeight="{Binding MinimumWindowHeight}"
+        MinWidth="{Binding MinimumWindowWidth}"
+        Height="500" 
+        Width="800">
 
-        <!-- Row 2 -->
-        <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
-            <Button Margin="0, 0, 5, 0" Content="Movie List" Click="LoadMovieListView" />
-            <Button Content="My Movies" Click="LoadMyMoviesView" />
-        </StackPanel>
-        
-        <!-- Row 3 -->
-        <ContentControl Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Content="{Binding}" Margin="0, 10, 0, 0" />
-    </Grid>
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <!-- Outer Window Border -->
+                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=5}">
+
+                            <!-- Window border and drop shadow -->
+                            <Grid>
+
+                                <Border Background="White">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
+                                    </Border.Effect>
+                                </Border>
+
+                                <!-- Main Window -->
+                                <Grid Background="{StaticResource DisneyPurpleBrush}">
+                                    <Grid.RowDefinitions>
+                                        <!-- Window Title Bar -->
+                                        <RowDefinition Height="{Binding WindowTitleGridLength, FallbackValue=42}" />
+                                        <!-- Main Content -->
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Window Title Bar -->
+                                    <Border BorderBrush="{StaticResource LightGrayBrush}" BorderThickness="0 0 0 1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <!-- Icon -->
+                                                <ColumnDefinition Width="Auto" />
+                                                <!-- Title -->
+                                                <ColumnDefinition Width="*" />
+                                                <!-- Window Controls -->
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Icon -->
+                                            <Button Style="{StaticResource WindowSystemIcon}" Command="{Binding WindowSystemMenu}">
+                                                <Image Source="/Resources/Images/disney-castle.png" />
+                                            </Button>
+
+                                            <!-- Title -->
+                                            <Viewbox Grid.ColumnSpan="3">
+                                                <TextBlock Style="{StaticResource TitleBarTextBlock}" Text="{Binding WindowCaption,FallbackValue='My Disney Movies'}" />
+                                            </Viewbox>
+
+                                            <!-- Window Controls -->
+                                            <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                                <Button Style="{StaticResource WindowSystemButton}" Content="_" Command="{Binding MinimizeWindow}" />
+                                                <Button Style="{StaticResource WindowSystemButton}" Content="[ ]" Command="{Binding MaximizeWindow}" />
+                                                <Button Style="{StaticResource WindowCloseButton}" Content="X" Command="{Binding CloseWindow}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Main Content -->
+                                    <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Custom window settings -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="{Binding WindowCaptionHeight}"
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CornerRadius="0"
+            GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+
+    <!-- Main window content -->
+    <Border Background="{StaticResource DisneyBlueBrush}">
+        <Frame Name="MainFrame" Content="{Binding CurrentPage, Converter={vc:ApplicationPageValueConverter}}" Background="Transparent" />
+    </Border>
 </Window>
