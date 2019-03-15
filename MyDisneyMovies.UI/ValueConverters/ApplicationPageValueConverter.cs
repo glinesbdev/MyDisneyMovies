@@ -1,11 +1,8 @@
-﻿using MyDisneyMovies.UI.DataModels;
+﻿using MyDisneyMovies.Core.Enums;
+using MyDisneyMovies.UI.Pages;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyDisneyMovies.UI.ValueConverters
 {
@@ -20,7 +17,7 @@ namespace MyDisneyMovies.UI.ValueConverters
             switch ((ApplicationPage)value)
             {
                 case ApplicationPage.MoviesList:
-                    return null;
+                    return new MoviesListPage();
 
                 case ApplicationPage.MyMovies:
                     return null;

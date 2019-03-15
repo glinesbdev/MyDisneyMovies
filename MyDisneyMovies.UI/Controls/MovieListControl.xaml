@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="MyDisneyMovies.UI.Controls.MovieListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyDisneyMovies.UI.Controls"
+             xmlns:entity="clr-namespace:MyDisneyMovies.Core.Entities;assembly=MyDisneyMovies.Core"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="500">    
+    <Grid d:DataContext="{x:Static entity:MoviesListDesignViewModel.Instance}" Background="Transparent">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="MovieList" ItemsSource="{Binding Movies}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:MovieControl />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

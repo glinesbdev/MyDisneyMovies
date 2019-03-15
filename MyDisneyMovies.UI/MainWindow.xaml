@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyDisneyMovies.UI"
         xmlns:vc="clr-namespace:MyDisneyMovies.UI.ValueConverters"
+        xmlns:vm="clr-namespace:MyDisneyMovies.UI.ViewModels"
         mc:Ignorable="d"
         AllowsTransparency="True"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        Icon="/Resources/Images/disney-castle.png"
         MinHeight="{Binding MinimumWindowHeight}"
         MinWidth="{Binding MinimumWindowWidth}"
         Height="500" 
         Width="800">
-
+    
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
             <Setter Property="Template">
@@ -41,36 +43,35 @@
                                     </Grid.RowDefinitions>
 
                                     <!-- Window Title Bar -->
-                                    <Border BorderBrush="{StaticResource LightGrayBrush}" BorderThickness="0 0 0 1">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <!-- Icon -->
-                                                <ColumnDefinition Width="Auto" />
-                                                <!-- Title -->
-                                                <ColumnDefinition Width="*" />
-                                                <!-- Window Controls -->
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
                                             <!-- Icon -->
-                                            <Button Style="{StaticResource WindowSystemIcon}" Command="{Binding WindowSystemMenu}">
-                                                <Image Source="/Resources/Images/disney-castle.png" />
-                                            </Button>
-
+                                            <ColumnDefinition Width="Auto" />
                                             <!-- Title -->
-                                            <Viewbox Grid.ColumnSpan="3">
-                                                <TextBlock Style="{StaticResource TitleBarTextBlock}" Text="{Binding WindowCaption,FallbackValue='My Disney Movies'}" />
-                                            </Viewbox>
-
+                                            <ColumnDefinition Width="*" />
                                             <!-- Window Controls -->
-                                            <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                                <Button Style="{StaticResource WindowSystemButton}" Content="_" Command="{Binding MinimizeWindow}" />
-                                                <Button Style="{StaticResource WindowSystemButton}" Content="[ ]" Command="{Binding MaximizeWindow}" />
-                                                <Button Style="{StaticResource WindowCloseButton}" Content="X" Command="{Binding CloseWindow}" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
+                                        <!-- Icon -->
+                                        <Button Style="{StaticResource WindowSystemIcon}" Margin="{Binding SystemButtonOffset}" Command="{Binding WindowSystemMenu}">
+                                            <Image Source="/Resources/Images/disney-castle.png" />
+                                        </Button>
+
+                                        <!-- Title -->
+                                        <Viewbox Grid.ColumnSpan="3">
+                                            <TextBlock Style="{StaticResource TitleBarTextBlock}" Text="{Binding WindowCaption,FallbackValue='My Disney Movies'}" />
+                                        </Viewbox>
+
+                                        <!-- Window Controls -->
+                                        <Border Grid.Column="3" Margin="{Binding WindowCloseButtonsOffset}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Style="{StaticResource WindowMinimizeButton}" Command="{Binding MinimizeWindow}" />
+                                                <Button Style="{StaticResource WindowMaximizeButton}" Command="{Binding MaximizeWindow}" />
+                                                <Button Style="{StaticResource WindowCloseButton}" Command="{Binding CloseWindow}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
                                     <!-- Main Content -->
                                     <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
                                 </Grid>
@@ -93,6 +94,36 @@
 
     <!-- Main window content -->
     <Border Background="{StaticResource DisneyBlueBrush}">
-        <Frame Name="MainFrame" Content="{Binding CurrentPage, Converter={vc:ApplicationPageValueConverter}}" Background="Transparent" />
+        <Grid >
+            <Grid.RowDefinitions>
+                <!-- Navigation -->
+                <RowDefinition Height="50" />
+                <!-- Main content -->
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <!-- Button -->
+                <ColumnDefinition Width="*" />
+                <!-- Attribution -->
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Navigation Buttons -->
+            <Border Padding="10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="All Movies" Style="{StaticResource NavigationButton}" />
+                    <Button Content="My Movies" Style="{StaticResource NavigationButton}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Attributions -->
+            <Border Grid.Column="1" Padding="6" Margin="0 0 4 0">
+                <Image Source="/Resources/Images/powered-by-tmdb.png" />
+            </Border>
+
+            <!-- Main content -->
+            <Frame x:Name="MainFrame" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding Application.CurrentPage, Converter={vc:ApplicationPageValueConverter}}" Background="Transparent" />
+        </Grid>
     </Border>
 </Window>

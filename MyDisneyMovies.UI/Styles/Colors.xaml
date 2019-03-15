@@ -11,6 +11,9 @@
     <Color x:Key="Gray">#afafaf</Color>
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource Gray}" />
 
+    <Color x:Key="DarkGray">#7a7a7a</Color>
+    <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}" />
+
     <Color x:Key="DisneyOrange">#fbbe4f</Color>
     <SolidColorBrush x:Key="DisneyOrangeBrush" Color="{StaticResource DisneyOrange}" />
 

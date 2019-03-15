@@ -12,4 +12,11 @@
 
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlock}" />
 
+    <Style x:Key="MoviePopularity" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
+        <Setter Property="Foreground" Value="{StaticResource DisneyOrangeBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
 </ResourceDictionary>

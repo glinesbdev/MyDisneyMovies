@@ -1,9 +1,7 @@
-﻿using MyDisneyMovies.UI.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MyDisneyMovies.Core;
+using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.Enums;
+using MyDisneyMovies.Core.Utils;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,7 +10,7 @@ namespace MyDisneyMovies.UI.ViewModels
     /// <summary>
     /// View model for the main window
     /// </summary>
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseEntity
     {
         #region Private Members
 
@@ -38,7 +36,7 @@ namespace MyDisneyMovies.UI.ViewModels
         /// Height of the window title
         /// </summary>
         public int WindowTitleGridHeight { get; set; } = 42;
-               
+
         /// <summary>
         /// Title of the window
         /// </summary>
@@ -70,6 +68,21 @@ namespace MyDisneyMovies.UI.ViewModels
         public Thickness ResizeBorderThickness => new Thickness(ResizeBorderSize + OuterMarginSize);
 
         /// <summary>
+        /// Get the current application entity
+        /// </summary>
+        public ApplicationEntity Application => IoC.Get<ApplicationEntity>();
+
+        /// <summary>
+        /// Margin offset of the system button in full screen mode
+        /// </summary>
+        public Thickness SystemButtonOffset => Borderless ? new Thickness(10.0, 5.0, 0, 0) : new Thickness(0);
+
+        /// <summary>
+        /// Margin offset of the window close button in full screen mode
+        /// </summary>
+        public Thickness WindowCloseButtonsOffset => Borderless ? new Thickness(0, 0, 7.0, 0) : new Thickness(0);
+
+        /// <summary>
         /// The outer margin size of the window for the outer drop shadow
         /// </summary>
         public int OuterMarginSize
@@ -82,8 +95,6 @@ namespace MyDisneyMovies.UI.ViewModels
         /// The margin around the window that allows for drop shadows
         /// </summary>
         public Thickness OuterMarginSizeThickness => new Thickness(OuterMarginSize);
-
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.MoviesList;
 
         #endregion
 
@@ -103,7 +114,7 @@ namespace MyDisneyMovies.UI.ViewModels
             _window = window;
 
             // When the window resizes...
-            _window.StateChanged += (sender, e) => 
+            _window.StateChanged += (sender, e) =>
             {
                 // Update properties
                 WindowResized();
@@ -148,11 +159,13 @@ namespace MyDisneyMovies.UI.ViewModels
         /// </summary>
         private void WindowResized()
         {
-            OnProprtyChanged(nameof(Borderless));
-            OnProprtyChanged(nameof(ResizeBorderSize));
-            OnProprtyChanged(nameof(ResizeBorderThickness));
-            OnProprtyChanged(nameof(OuterMarginSize));
-            OnProprtyChanged(nameof(OuterMarginSizeThickness));
+            OnPropertyChanged(nameof(Borderless));
+            OnPropertyChanged(nameof(ResizeBorderSize));
+            OnPropertyChanged(nameof(ResizeBorderThickness));
+            OnPropertyChanged(nameof(OuterMarginSize));
+            OnPropertyChanged(nameof(OuterMarginSizeThickness));
+            OnPropertyChanged(nameof(SystemButtonOffset));
+            OnPropertyChanged(nameof(WindowCloseButtonsOffset));
         }
 
         #endregion

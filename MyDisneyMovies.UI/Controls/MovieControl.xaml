@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="MyDisneyMovies.UI.Controls.MovieControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyDisneyMovies.UI.Controls"
+             xmlns:entity="clr-namespace:MyDisneyMovies.Core.Entities;assembly=MyDisneyMovies.Core"
+             xmlns:vc="clr-namespace:MyDisneyMovies.UI.ValueConverters"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="500">
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">                        
+                        <!-- Main Content -->
+                        <Border x:Name="MovieContainer"
+                                Background="{StaticResource VeryLightGrayBrush}"
+                                Padding="5"
+                                MouseLeftButtonUp="MovieContainer_MouseLeftButtonUp">
+                            
+                            <Grid x:Name="Container" Background="Transparent">
+                                
+                                <Grid.ColumnDefinitions>
+                                    <!-- Title and Overview -->
+                                    <ColumnDefinition Width="3*" />
+                                    
+                                    <!-- Popularity rating -->
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Title and Overview -->
+                                <StackPanel>
+                                    
+                                    <!-- Title -->
+                                    <TextBlock Text="{Binding Title}"
+                                               TextTrimming="CharacterEllipsis"
+                                               Foreground="Black"
+                                               FontSize="24"/>
+                                    
+                                    <!-- Overview -->
+                                    <TextBlock Text="{Binding Overview}"
+                                               TextTrimming="CharacterEllipsis"
+                                               Foreground="Black" />
+
+                                    <TextBlock Text="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <Border Grid.Column="1" Padding="10 0 0 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <!-- Popularity rating -->
+                                            <RowDefinition Height="*" />
+                                            <!-- Save Button -->
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Popularity rating -->
+                                        <TextBlock Style="{StaticResource MoviePopularity}"
+                                               Text="{Binding Popularity, Converter={vc:MoviePopularityValueConverter}}"/>
+
+                                        <!-- Save Button -->
+                                        <Button Grid.Row="1" Style="{StaticResource SaveMovieButton}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Interactions -->
+                        <ControlTemplate.Triggers>
+                            
+                            <!-- Highlight if mouse over -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="MovieContainer" Property="Background" Value="{StaticResource LightGrayBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Output of main content -->
+    <ContentControl Style="{StaticResource ContentStyle}" d:DataContext="{x:Static entity:MovieDesignViewModel.Instance}"/>
+</UserControl>

@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="MyDisneyMovies.UI.Controls.MovieDetailControl"
+             x:Name="MovieDetail"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyDisneyMovies.UI.Controls"
+             xmlns:vc="clr-namespace:MyDisneyMovies.UI.ValueConverters"
+             xmlns:entity="clr-namespace:MyDisneyMovies.Core.Entities;assembly=MyDisneyMovies.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="300">
+    
+    <Border Padding="5">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Movie -->
+                <Grid d:DataContext="{x:Static entity:MoviesListDesignViewModel.Instance}">
+                    <Grid.RowDefinitions>
+
+                        <!-- Image -->
+                        <RowDefinition Height="300" />
+
+                        <!-- Movie Details -->
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Visibility="{Binding HasSelectedMovie, Converter={vc:BooleanToVisibilityValueConverter}, ConverterParameter=False}">                        
+                        <!-- Default image that will show when no movie is selected -->
+                        <Border Padding="0 10 0 0">
+                            <Image Source="https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png"
+                                Style="{StaticResource MoviePosterImage}"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Movie Image -->
+                    <Image Source="{Binding SelectedMovie.PosterPath}" Style="{StaticResource MoviePosterImage}"/>
+
+                    <!-- Movie Details -->
+                    <Border Grid.Row="1"
+                            Padding="10 0"
+                            Visibility="{Binding HasSelectedMovie, Converter={vc:BooleanToVisibilityValueConverter}}">
+                        <StackPanel>
+
+                            <!-- Move Title -->
+                            <TextBlock Text="{Binding SelectedMovie.Title}" 
+                                       FontSize="32"
+                                       Margin="0 10"
+                                       TextWrapping="WrapWithOverflow"/>
+
+                            <!-- Movie Overview -->
+                            <TextBlock Text="{Binding SelectedMovie.Overview}" TextWrapping="WrapWithOverflow" />
+                            
+                            <!-- Spacing -->
+                            <TextBlock  />
+                            
+                            <!-- Movie Rating -->
+                            <TextBlock Text="The Move Database Rating" HorizontalAlignment="Center" FontWeight="DemiBold" />
+
+                            <TextBlock Style="{StaticResource MoviePopularity}" Text="{Binding SelectedMovie.Popularity, Converter={vc:MoviePopularityValueConverter}}" Margin="0 0 0 20" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>
