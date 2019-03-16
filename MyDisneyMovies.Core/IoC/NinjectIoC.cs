@@ -1,7 +1,7 @@
-﻿using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core;
+using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Utils;
 using Ninject;
-using System.Collections.Generic;
 
 namespace MyDisneyMovies.Core.IoC
 {
@@ -63,7 +63,7 @@ namespace MyDisneyMovies.Core.IoC
             ApiManager api = new ApiManager();
 
             Kernel.Bind<ApplicationEntity>().ToConstant(new ApplicationEntity());
-            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = (List<MovieEntity>)api.GetMovies() });
+            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = api.GetMovies() });
         }
 
         #endregion
