@@ -1,6 +1,8 @@
 ﻿using MyDisneyMovies.Core;
 using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Enums;
+using MyDisneyMovies.Core.Factories;
+using MyDisneyMovies.Core.IoC;
 using MyDisneyMovies.Core.Utils;
 using System.Windows;
 using System.Windows.Input;
@@ -70,7 +72,7 @@ namespace MyDisneyMovies.UI.ViewModels
         /// <summary>
         /// Get the current application entity
         /// </summary>
-        public ApplicationEntity Application => IoC.Get<ApplicationEntity>();
+        public ApplicationEntity Application => IoC.Container.Get<ApplicationEntity>();
 
         /// <summary>
         /// Margin offset of the system button in full screen mode

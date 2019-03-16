@@ -22,9 +22,9 @@
         </Grid.ColumnDefinitions>
 
         <!-- Movie List -->
-        <c:MovieListControl />
+        <c:MovieListControl d:DataContext="{x:Static entity:MovieListDesignViewModel.Instance}" />
 
         <!-- Movie Details -->
-        <c:MovieDetailControl Grid.Column="1" />
+        <c:MovieDetailControl d:DataContext="{x:Static entity:MovieListDesignViewModel.Instance}" Grid.Column="1" />
     </Grid>
 </local:BasePage>

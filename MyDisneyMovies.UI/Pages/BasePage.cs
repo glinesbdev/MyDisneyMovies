@@ -1,5 +1,6 @@
 ﻿using MyDisneyMovies.Core;
 using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.IoC;
 using System.Windows.Controls;
 
 namespace MyDisneyMovies.UI.Pages
@@ -60,7 +61,7 @@ namespace MyDisneyMovies.UI.Pages
         /// </summary>
         public BasePage()
         {
-            Model = IoC.Get<ViewModel>();
+            Model = IoC.Container.Get<ViewModel>();
         }
 
         /// <summary>

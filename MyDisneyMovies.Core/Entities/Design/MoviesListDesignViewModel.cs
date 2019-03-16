@@ -4,43 +4,37 @@ using System.Linq;
 namespace MyDisneyMovies.Core.Entities
 {
     /// <summary>
-    /// View model for use during design time for the movies list control
+    /// View model for use during design time for the movies list control.
+    /// Has singleton capabilities but not soley a "singleton" class.
     /// </summary>
-    public class MoviesListDesignViewModel
+    public class MovieListDesignViewModel : MovieListEntity
     {
         #region Singleton
 
-        private static MoviesListDesignViewModel _instance;
-
-        public static MoviesListDesignViewModel Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new MoviesListDesignViewModel();
-                }
-
-                return _instance;
-            }
-        }
+        public static MovieListDesignViewModel Instance => Singleton<MovieListDesignViewModel>.Instance;
 
         #endregion
 
         #region Public Members
 
-        public List<MovieEntity> Movies { get; set; }
+        /// <summary>
+        /// List of movies.
+        /// </summary>
+        //public List<MovieEntity> Movies { get; set; }
 
-        public MovieEntity SelectedMovie { get; set; }
+        /// <summary>
+        /// The currently selected movie to display.
+        /// </summary>
+        //public MovieEntity SelectedMovie { get; set; }
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
-        public MoviesListDesignViewModel()
+        public MovieListDesignViewModel()
         {
             // Populate movie list to display
             Movies = new List<MovieEntity>

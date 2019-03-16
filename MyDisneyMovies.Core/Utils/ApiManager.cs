@@ -80,8 +80,6 @@ namespace MyDisneyMovies.Core.Utils
         /// <returns></returns>
         public IEnumerable<IMovie> HttpGetMovies()
         {
-            List<MovieEntity> movies = new List<MovieEntity>();
-
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -95,6 +93,8 @@ namespace MyDisneyMovies.Core.Utils
                     // The API result for the initial page
                     ApiResponseEntity responseResult = GetPaginatedApiResponse(client, url, page) as ApiResponseEntity;
 
+                    List<BaseMovie> movies = new List<BaseMovie>();
+
                     while (page < responseResult.TotalPages)
                     {
                         // Get the result for the next page
@@ -106,17 +106,24 @@ namespace MyDisneyMovies.Core.Utils
                             .Select(movie => { movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}"; return movie; })
                         );
 
+                        // Filter the movies by title
+                        movies = FilterMovieTitles(movies);
+
                         // Go to next page
                         page++;
+
+                        // Write the data to the json file
+                        _fileManager.WriteMovies(movies);
+
+                        // Clear the items out of memory
+                        movies.Clear();
                     }
 
-                    // Filter the movies by title
-                    movies = FilterMovieTitles(movies);
+                    // Get movies from the movie file we wrote to
+                    if (_fileManager.MovieFileExists(_fileManager.PathToWrittenFile))
+                        return _fileManager.ReadMovies(_fileManager.PathToWrittenFile);
 
-                    // Write the data to the json file
-                    _fileManager.WriteMovies(movies);
-
-                    return movies;
+                    throw new Exception($"Cannot read requested file at: {_fileManager.PathToWrittenFile}");
                 }
                 catch (Exception e)
                 {
@@ -163,7 +170,7 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="movies">List of movies to filter.</param>
         /// <returns></returns>
-        private List<MovieEntity> FilterMovieTitles(List<MovieEntity> movies)
+        private List<BaseMovie> FilterMovieTitles(List<BaseMovie> movies)
         {
             if (movies.Any())
             {

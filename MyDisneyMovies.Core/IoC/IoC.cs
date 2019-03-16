@@ -1,60 +1,44 @@
-﻿using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core.Factories;
 using MyDisneyMovies.Core.Interfaces;
-using MyDisneyMovies.Core.Utils;
-using Ninject;
-using System.Collections.Generic;
 
-namespace MyDisneyMovies.Core
+namespace MyDisneyMovies.Core.IoC
 {
-    /// <summary>
-    /// The IoC container to manage and inject objects on demand.
-    /// </summary>
     public static class IoC
     {
+        #region Private Members
+
+        private static IIoCContainer _container = CreateNinjectContainer();
+
+        #endregion
+
         #region Public Members
 
         /// <summary>
-        /// The kernel for our IoC container
+        /// Access to the currently set IoC container.
         /// </summary>
-        public static IKernel Kernel { get; private set; } = new StandardKernel();
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Set up the container before use.
-        /// NOTE: This must be called before the container can be accessed.
-        /// </summary>
-        public static void Setup()
+        public static IIoCContainer Container
         {
-            // Bind the required entities
-            BindEntities();
-        }
-
-        /// <summary>
-        /// Get an object from the container.
-        /// </summary>
-        /// <typeparam name="T">The type of object to get.</typeparam>
-        /// <returns></returns>
-        public static T Get<T>()
-        {
-            return Kernel.Get<T>();
+            get => _container;
+            set
+            {
+                // If we're trying to give it a different type of container 
+                // than the default container, set the new type.
+                if (value.GetType() != _container.GetType())
+                    _container = value;
+            }
         }
 
         #endregion
 
-        #region Private Methods
+        #region Public Methods;
 
         /// <summary>
-        /// Bind the entties to the container.
+        /// Create an IoC container based on the Ninject implementation.
+        /// This is used as the default container.
         /// </summary>
-        private static void BindEntities()
+        public static IIoCContainer CreateNinjectContainer()
         {
-            ApiManager api = new ApiManager();
-
-            Kernel.Bind<ApplicationEntity>().ToConstant(new ApplicationEntity());
-            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = (List<MovieEntity>)api.GetMovies() });
+            return IoCFactory<NinjectIoC>.Create();
         }
 
         #endregion

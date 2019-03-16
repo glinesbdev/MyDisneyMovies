@@ -8,12 +8,12 @@ namespace MyDisneyMovies.Core.Entities
     /// Entity to hold the movie data.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class MovieEntity : BaseEntity, IMovie
+    public class MovieEntity : BaseMovie
     {
         #region Public Members
 
         [JsonProperty("popularity")]
-        public float Popularity { get; set; }
+        public override double Popularity { get; set; }
 
         [JsonProperty("media_type")]
         public string MediaType { get; set; }
@@ -25,7 +25,7 @@ namespace MyDisneyMovies.Core.Entities
         public string ProfilePath { get; set; }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public override string Title { get; set; }
 
         [JsonProperty("original_name")]
         public string OriginalName { get; set; }
@@ -37,7 +37,7 @@ namespace MyDisneyMovies.Core.Entities
         public float? VoteAverage { get; set; }
 
         [JsonProperty("poster_path")]
-        public string PosterPath { get; set; }
+        public override string PosterPath { get; set; }
 
         [JsonProperty("first_air_date")]
         public string FirstAirDate { get; set; }
@@ -52,7 +52,7 @@ namespace MyDisneyMovies.Core.Entities
         public object BackdropPath { get; set; }
 
         [JsonProperty("overview")]
-        public string Overview { get; set; }
+        public override string Overview { get; set; }
 
         [JsonProperty("origin_country")]
         public List<string> OriginCountry { get; set; }

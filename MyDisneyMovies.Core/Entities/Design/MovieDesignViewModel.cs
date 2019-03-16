@@ -1,26 +1,14 @@
 ﻿namespace MyDisneyMovies.Core.Entities
 {
     /// <summary>
-    /// Data class for displaying movie data
+    /// Data class for displaying movie data.
+    /// Has singleton capabilities but not soley a "singleton" class.
     /// </summary>
     public class MovieDesignViewModel : MovieEntity
     {
         #region Singleton
 
-        private static MovieDesignViewModel _instance;
-
-        public static MovieDesignViewModel Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new MovieDesignViewModel();
-                }
-
-                return _instance;
-            }
-        }
+        public static MovieDesignViewModel Instance => Singleton<MovieDesignViewModel>.Instance;
 
         #endregion
 

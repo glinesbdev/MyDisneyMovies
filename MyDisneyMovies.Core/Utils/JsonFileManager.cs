@@ -1,9 +1,11 @@
-﻿using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core.Config;
+using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace MyDisneyMovies.Core.Utils
 {
@@ -20,23 +22,36 @@ namespace MyDisneyMovies.Core.Utils
         // File extension
         private readonly string _fileExtension = @".json";
 
+        // The Json file manager
+        private readonly JsonManager _jsonManager = new JsonManager();
+
         #endregion
 
-        #region Private Methods
+        #region Public Members
 
-        // The full path where the data will be saved
-        private string BuildFilePath() => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", $"{_fileName}{_fileExtension}");
-
-        private string BuildFullPath(string path = null, string filename = null, string extension = null)
-        {
-            string fullFilename = (string.IsNullOrWhiteSpace(filename) && string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
-
-            return string.IsNullOrWhiteSpace(path) ? BuildFilePath() : Path.Combine(path, fullFilename);
-        }
+        public string PathToWrittenFile { get; private set; }
 
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Build the full path to the data file.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory.</param>
+        /// <param name="filename">The filename to query.</param>
+        /// <param name="extension">The extension of the file.</param>
+        /// <returns></returns>
+        public string BuildFullPath(string directoryPath = null, string filename = null, string extension = null)
+        {
+            string fullFilename = (string.IsNullOrWhiteSpace(filename) && string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
+
+            string pathToFile = string.IsNullOrWhiteSpace(directoryPath) ? Settings.MovieDataPath : Path.Combine(directoryPath, fullFilename);
+
+            PathToWrittenFile = pathToFile;
+
+            return PathToWrittenFile;
+        }
 
         /// <summary>
         /// Writes the json data to a file.
@@ -51,19 +66,16 @@ namespace MyDisneyMovies.Core.Utils
             {
                 // Check if the requesting directory exists
                 if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Data"))
-                {
                     // Create the directory if it doesn't exist
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
-                }
 
-                // Creates or opens the file to write to
-                using (StreamWriter file = File.CreateText(BuildFullPath(path, filename, extension)))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
+                IEnumerable<IMovie> existingMovies = ReadMovies(BuildFullPath(path, filename, extension)) ?? new List<IMovie>();
 
-                    // Serialize the movie data
-                    serializer.Serialize(file, movies);
-                }
+                List<IMovie> existingMoviesList = existingMovies.ToList();
+                existingMoviesList.AddRange(movies);
+
+                // Append the Json to the file
+                File.WriteAllText(BuildFullPath(path, filename, extension), JsonConvert.SerializeObject(existingMoviesList));
             }
             catch (Exception e)
             {
@@ -82,13 +94,18 @@ namespace MyDisneyMovies.Core.Utils
             try
             {
                 // Open the file to write to
-                using (StreamReader file = File.OpenText(BuildFullPath(path, filename, extension)))
+                if (MovieFileExists(BuildFullPath(path, filename, extension)))
                 {
-                    JsonSerializer serializer = new JsonSerializer();
+                    using (StreamReader file = File.OpenText(BuildFullPath(path, filename, extension)))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
 
-                    // Return the data read from the file
-                    return (List<MovieEntity>)serializer.Deserialize(file, typeof(List<MovieEntity>));
+                        // Return the data read from the file
+                        return (List<MovieEntity>)serializer.Deserialize(file, typeof(List<MovieEntity>));
+                    }
                 }
+
+                return null;
             }
             catch (Exception e)
             {

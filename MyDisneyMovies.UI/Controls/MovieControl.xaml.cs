@@ -1,20 +1,8 @@
-﻿using MyDisneyMovies.Core;
-using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.IoC;
 using MyDisneyMovies.UI.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MyDisneyMovies.UI.Controls
 {
@@ -32,10 +20,13 @@ namespace MyDisneyMovies.UI.Controls
         {
             Border border = sender as Border;
             MovieEntity movie = border.DataContext as MovieEntity;
-            MovieListEntity movieList = IoC.Get<MovieListEntity>();
+            MovieListEntity movieList = ViewModelLocator.Instance.MovieListEntity;
 
-            movieList.SelectedMovie = movie;
-            movieList.HasSelectedMovie = true;
+            if (movieList != null)
+            {
+                movieList.SelectedMovie = movie;
+                movieList.HasSelectedMovie = true;
+            }
         }
     }
 }

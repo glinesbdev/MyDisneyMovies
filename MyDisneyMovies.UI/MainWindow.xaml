@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyDisneyMovies.UI"
         xmlns:vc="clr-namespace:MyDisneyMovies.UI.ValueConverters"
-        xmlns:vm="clr-namespace:MyDisneyMovies.UI.ViewModels"
+        xmlns:entity="clr-namespace:MyDisneyMovies.Core.Entities;assembly=MyDisneyMovies.Core"
         mc:Ignorable="d"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
