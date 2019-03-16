@@ -46,9 +46,7 @@ namespace MyDisneyMovies.Core.Utils
         {
             string fullFilename = (string.IsNullOrWhiteSpace(filename) && string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
 
-            string pathToFile = string.IsNullOrWhiteSpace(directoryPath) ? Settings.MovieDataPath : Path.Combine(directoryPath, fullFilename);
-
-            PathToWrittenFile = pathToFile;
+            PathToWrittenFile = string.IsNullOrWhiteSpace(directoryPath) ? Settings.MovieDataPath : Path.Combine(directoryPath, fullFilename);
 
             return PathToWrittenFile;
         }
