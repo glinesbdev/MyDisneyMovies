@@ -26,7 +26,7 @@ namespace MyDisneyMovies.Core.Entities
         /// <summary>
         /// Tracks if a movie has been selected or not.
         /// </summary>
-        public bool HasSelectedMovie { get; set; }
+        public bool HasSelectedMovie => SelectedMovie != null;
 
         /// <summary>
         /// The selected movie.
@@ -37,7 +37,6 @@ namespace MyDisneyMovies.Core.Entities
             set
             {
                 _selectedMovie = value;
-                HasSelectedMovie = true;
 
                 OnPropertyChanged(nameof(SelectedMovie));
                 OnPropertyChanged(nameof(HasSelectedMovie));

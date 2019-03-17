@@ -23,10 +23,7 @@ namespace MyDisneyMovies.UI.Controls
             MovieListEntity movieList = ViewModelLocator.Instance.MovieListEntity;
 
             if (movieList != null)
-            {
                 movieList.SelectedMovie = movie;
-                movieList.HasSelectedMovie = true;
-            }
         }
     }
 }
