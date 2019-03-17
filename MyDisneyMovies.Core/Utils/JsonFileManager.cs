@@ -39,7 +39,7 @@ namespace MyDisneyMovies.Core.Utils
         /// <returns></returns>
         public string BuildFullPath(string directoryPath = null, string filename = null, string extension = null)
         {
-            string fullFilename = (string.IsNullOrWhiteSpace(filename) && string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
+            string fullFilename = (!string.IsNullOrWhiteSpace(filename) && !string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
 
             PathToWrittenFile = string.IsNullOrWhiteSpace(directoryPath) ? Settings.MovieDataPath : Path.Combine(directoryPath, fullFilename);
 
@@ -62,6 +62,7 @@ namespace MyDisneyMovies.Core.Utils
                     // Create the directory if it doesn't exist.
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
 
+                // Cannot return new IEnumerable so List<T> was chosen as the IEumerable for this implementation
                 IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>(BuildFullPath(path, filename, extension)) ?? new List<IMovie>();
 
                 List<IMovie> existingMoviesList = existingMovies.ToList();
@@ -77,7 +78,7 @@ namespace MyDisneyMovies.Core.Utils
         }
 
         /// <summary>
-        /// Reads the json data from a file and returns a list of <see cref="MovieEntity"/> data.
+        /// Reads the json data from a file and returns an enumerable of <see cref="IMovie"/> data.
         /// </summary>
         /// <param name="path">Path to read the file from on disk.</param>
         /// <param name="filename">Filename to read.</param>
@@ -96,7 +97,7 @@ namespace MyDisneyMovies.Core.Utils
                     }
                 }
 
-                return null;
+                throw new Exception($"Cannot find file: {BuildFullPath(path, filename, extension)}");
             }
             catch (Exception e)
             {
