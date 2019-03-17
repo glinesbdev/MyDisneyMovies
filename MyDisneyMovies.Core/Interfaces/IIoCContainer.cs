@@ -13,6 +13,6 @@ namespace MyDisneyMovies.Core.Interfaces
     {
         T Get<T>();
         void Remove<T>();
-        void Setup();
+        void Setup<T>() where T : IMovie;
     }
 }

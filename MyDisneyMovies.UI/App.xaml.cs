@@ -22,7 +22,7 @@ namespace MyDisneyMovies.UI
             base.OnStartup(e);
 
             // Set up all of our entities for use
-            IoC.Container.Setup();
+            IoC.Container.Setup<MovieEntity>();
 
             // Navigate to the starting page
             //IoC.Get<ApplicationEntity>().GoToPage(ApplicationPage.MoviesList, IoC.Get<MovieListEntity>());

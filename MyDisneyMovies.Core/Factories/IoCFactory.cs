@@ -13,15 +13,31 @@ namespace MyDisneyMovies.Core.Factories
     /// <typeparam name="T"></typeparam>
     public static class IoCFactory<T> where T : IIoCContainer, new()
     {
+        #region Private Members
+
+        private static Dictionary<Type, T> factoryEntries = new Dictionary<Type, T>();
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
-        /// Create a factory of some type. Could be extended if more factory types were to be introduced.
+        /// Create a factory of some type. If a factory of that type has already been created, return it.
         /// </summary>
         /// <returns></returns>
         public static T Create()
         {
-            return new T();
+            if (!factoryEntries.ContainsKey(typeof(T)))
+            {
+                factoryEntries.Add(typeof(T), new T());
+                return factoryEntries.Last().Value;
+            }
+            else
+            {
+                return factoryEntries
+                    .Where(factory => typeof(T) == factory.Value.GetType())
+                    .First().Value;
+            }
         }
 
         #endregion

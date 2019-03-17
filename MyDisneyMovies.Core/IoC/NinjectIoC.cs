@@ -1,7 +1,8 @@
-﻿using MyDisneyMovies.Core;
-using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.Interfaces;
 using MyDisneyMovies.Core.Utils;
 using Ninject;
+using System.Linq;
 
 namespace MyDisneyMovies.Core.IoC
 {
@@ -46,9 +47,13 @@ namespace MyDisneyMovies.Core.IoC
         /// Set up the container before use.
         /// NOTE: This must be called before the container can be accessed.
         /// </summary>
-        public override void Setup()
+        /// <typeparam name="T">The type of <see cref="IMovie"/> object to get.</typeparam>
+        public override void Setup<T>()
         {
             BindEntities();
+
+            if (typeof(IMovie).IsAssignableFrom(typeof(T)))
+                BindEntities<T>();
         }
 
         #endregion
@@ -60,10 +65,17 @@ namespace MyDisneyMovies.Core.IoC
         /// </summary>
         private void BindEntities()
         {
-            ApiManager api = new ApiManager();
-
             Kernel.Bind<ApplicationEntity>().ToConstant(new ApplicationEntity());
-            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = api.GetMovies() });
+        }
+
+        /// <summary>
+        /// Bind <see cref="IMovie"/> entities to the container.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="IMovie"/> type.</typeparam>
+        private void BindEntities<T>() where T : IMovie
+        {
+            ApiManager api = new ApiManager();
+            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = api.GetMovies<T>().Cast<IMovie>().ToList() });
         }
 
         #endregion

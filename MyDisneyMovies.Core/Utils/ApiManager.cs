@@ -32,31 +32,31 @@ namespace MyDisneyMovies.Core.Utils
         /// Async method to get movies from the API
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<IMovie>> GetMoviesAsync()
+        public async Task<IEnumerable<IMovie>> GetMoviesAsync<IMovie>()
         {
             if (!_fileManager.MovieFileExists())
             {
-                return await Task.Run(() => HttpGetMovies());
+                return await Task.Run(() => HttpGetMovies<IMovie>());
             }
 
-            return await Task.Run(() => _fileManager.ReadMovies());
+            return await Task.Run(() => _fileManager.ReadMovies<IMovie>());
         }
 
         /// <summary>
         /// Get movies from the API
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IMovie> GetMovies()
+        public IEnumerable<IMovie> GetMovies<IMovie>()
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
             {
                 // Get the data
-                return HttpGetMovies();
+                return HttpGetMovies<IMovie>();
             }
 
             // Otherwise, return the data from the json file
-            return _fileManager.ReadMovies();
+            return _fileManager.ReadMovies<IMovie>();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace MyDisneyMovies.Core.Utils
         /// Gets an enumerable of <see cref="IMovie"/> objects over HTTP.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IMovie> HttpGetMovies()
+        public IEnumerable<IMovie> HttpGetMovies<IMovie>()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -121,7 +121,7 @@ namespace MyDisneyMovies.Core.Utils
 
                     // Get movies from the movie file we wrote to
                     if (_fileManager.MovieFileExists(_fileManager.PathToWrittenFile))
-                        return _fileManager.ReadMovies(_fileManager.PathToWrittenFile);
+                        return _fileManager.ReadMovies<IMovie>(_fileManager.PathToWrittenFile);
 
                     throw new Exception($"Cannot read requested file at: {_fileManager.PathToWrittenFile}");
                 }

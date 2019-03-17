@@ -1,5 +1,5 @@
-﻿<local:BasePage x:TypeArguments="entity:MovieListEntity" 
-                x:Class="MyDisneyMovies.UI.Pages.MoviesListPage"
+﻿<local:BasePage x:Class="MyDisneyMovies.UI.Pages.MoviesListPage"
+                x:TypeArguments="entity:MovieListEntity"
                 x:Name="MovieListPage"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,9 +22,9 @@
         </Grid.ColumnDefinitions>
 
         <!-- Movie List -->
-        <c:MovieListControl d:DataContext="{x:Static entity:MovieListDesignViewModel.Instance}" />
+        <c:MovieListControl />
 
         <!-- Movie Details -->
-        <c:MovieDetailControl d:DataContext="{x:Static entity:MovieListDesignViewModel.Instance}" Grid.Column="1" />
+        <c:MovieDetailControl Grid.Column="1" />
     </Grid>
 </local:BasePage>

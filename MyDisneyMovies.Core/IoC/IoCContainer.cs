@@ -1,4 +1,5 @@
 ﻿using MyDisneyMovies.Core.Interfaces;
+using MyDisneyMovies.Core.Utils;
 
 namespace MyDisneyMovies.Core
 {
@@ -26,7 +27,7 @@ namespace MyDisneyMovies.Core
         /// Set up the container before use.
         /// NOTE: This must be called before the container can be accessed.
         /// </summary>
-        public abstract void Setup();
+        public abstract void Setup<T>() where T : IMovie;
 
         #endregion
     }

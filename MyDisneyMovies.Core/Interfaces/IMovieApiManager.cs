@@ -23,7 +23,7 @@ namespace MyDisneyMovies.Core.Interfaces
         ///     to fetch the enumerable of <see cref="IMovie"/> objects.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<IMovie> GetMovies();
+        IEnumerable<IMovie> GetMovies<IMovie>();
 
         /// <summary>
         /// Wrapper method that checks if the data is already available.
@@ -31,7 +31,7 @@ namespace MyDisneyMovies.Core.Interfaces
         ///     to fetch the enumerable of <see cref="IMovie"/> objects asynchronously.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<IMovie>> GetMoviesAsync();
+        Task<IEnumerable<IMovie>> GetMoviesAsync<IMovie>();
 
         /// <summary>
         /// Gets a generic, paginated response from a GET API call.
@@ -46,6 +46,6 @@ namespace MyDisneyMovies.Core.Interfaces
         /// Sends an HTTP GET request to fetch a enumerable <see cref="IMovie"/> objects.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<IMovie> HttpGetMovies();
+        IEnumerable<IMovie> HttpGetMovies<IMovie>();
     }
 }

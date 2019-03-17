@@ -23,7 +23,7 @@ namespace MyDisneyMovies.Core.IoC
             throw new NotImplementedException();
         }
 
-        public override void Setup()
+        public override void Setup<T>()
         {
             throw new NotImplementedException();
         }

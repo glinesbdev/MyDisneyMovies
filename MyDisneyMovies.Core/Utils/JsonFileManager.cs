@@ -16,14 +16,9 @@ namespace MyDisneyMovies.Core.Utils
     {
         #region Private Members
 
-        // Filename which we will save the data to
         private readonly string _fileName = @"movies";
 
-        // File extension
         private readonly string _fileExtension = @".json";
-
-        // The Json file manager
-        private readonly JsonManager _jsonManager = new JsonManager();
 
         #endregion
 
@@ -58,16 +53,16 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="path">Path to save the file on disk.</param>
         /// <param name="filename">Filename of the file to save.</param>
         /// <param name="extension">The extension of the file.</param>
-        public void WriteMovies(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null)
+        public void WriteMovies<IMovie>(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null)
         {
             try
             {
-                // Check if the requesting directory exists
+                // Check if the requesting directory exists.
                 if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Data"))
-                    // Create the directory if it doesn't exist
+                    // Create the directory if it doesn't exist.
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
 
-                IEnumerable<IMovie> existingMovies = ReadMovies(BuildFullPath(path, filename, extension)) ?? new List<IMovie>();
+                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>(BuildFullPath(path, filename, extension)) ?? new List<IMovie>();
 
                 List<IMovie> existingMoviesList = existingMovies.ToList();
                 existingMoviesList.AddRange(movies);
@@ -82,12 +77,12 @@ namespace MyDisneyMovies.Core.Utils
         }
 
         /// <summary>
-        /// Reads the json data from a file and returns a list of <see cref="MovieEntity"/> data
+        /// Reads the json data from a file and returns a list of <see cref="MovieEntity"/> data.
         /// </summary>
-        /// <param name="path">Path to read the file from on disk</param>
-        /// <param name="filename">Filename to read</param>
+        /// <param name="path">Path to read the file from on disk.</param>
+        /// <param name="filename">Filename to read.</param>
         /// <returns></returns>
-        public IEnumerable<IMovie> ReadMovies(string path = null, string filename = null, string extension = null)
+        public IEnumerable<IMovie> ReadMovies<IMovie>(string path = null, string filename = null, string extension = null)
         {
             try
             {
@@ -96,10 +91,8 @@ namespace MyDisneyMovies.Core.Utils
                 {
                     using (StreamReader file = File.OpenText(BuildFullPath(path, filename, extension)))
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-
                         // Return the data read from the file
-                        return (List<MovieEntity>)serializer.Deserialize(file, typeof(List<MovieEntity>));
+                        return JsonConvert.DeserializeObject<IMovie[]>(file.ReadToEnd());
                     }
                 }
 
@@ -123,10 +116,10 @@ namespace MyDisneyMovies.Core.Utils
         }
 
         /// <summary>
-        /// Deletes a file if the file exists
+        /// Deletes a file if the file exists.
         /// </summary>
-        /// <param name="path">Path where the file is located</param>
-        /// <param name="filename">Filename to check for</param>
+        /// <param name="path">Path where the file is located.</param>
+        /// <param name="filename">Filename to check for.</param>
         public void DeleteFile(string path = null, string filename = null, string extension = null)
         {
             string fullPath = BuildFullPath(path, filename, extension);
