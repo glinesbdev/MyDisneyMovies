@@ -112,10 +112,10 @@ namespace MyDisneyMovies.Core.Utils
                     }
 
                     // Get movies from the movie file we wrote to
-                    if (_fileManager.MovieFileExists(_fileManager.PathToWrittenFile))
-                        return _fileManager.ReadMovies<T>(_fileManager.PathToWrittenFile);
+                    if (_fileManager.MovieFileExists())
+                        return _fileManager.ReadMovies<T>();
 
-                    throw new Exception($"Cannot read requested file at: {_fileManager.PathToWrittenFile}");
+                    throw new Exception("Cannot read requested file.");
                 }
                 catch (Exception e)
                 {
