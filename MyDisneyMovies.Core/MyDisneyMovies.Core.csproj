@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Settings.cs" />
+    <Compile Include="Entities\Api\BaseApiResponse.cs" />
     <Compile Include="Entities\Api\MovieEntityApiResponse.cs" />
     <Compile Include="Entities\Application\ApplicationEntity.cs" />
     <Compile Include="Entities\Base\BaseEntity.cs" />

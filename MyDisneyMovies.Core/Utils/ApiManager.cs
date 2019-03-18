@@ -64,12 +64,12 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="url">The API URL to connect to.</param>
         /// <param name="page">The page of data to get for paginated results.</param>
         /// <returns></returns>
-        public IApiResponse GetPaginatedApiResponse(HttpClient client, string url, int page)
+        public IApiResponse GetPaginatedApiResponse<T>(HttpClient client, string url, int page) where T : IMovie
         {
             HttpResponseMessage response = client.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
 
-            return DeserializeJsonResponse(response.Content.ReadAsStringAsync().Result);
+            return DeserializeJsonResponse<T>(response.Content.ReadAsStringAsync().Result);
         }
 
         /// <summary>
@@ -89,33 +89,39 @@ namespace MyDisneyMovies.Core.Utils
                     string url = BuildPaginatedUrl(page);
 
                     // The API result for the initial page
-                    MovieEntityApiResponse responseResult = GetPaginatedApiResponse(client, url, page) as MovieEntityApiResponse;
-
-                    List<T> movies = new List<T>();
-
-                    while (page < responseResult.TotalPages)
+                    if (GetPaginatedApiResponse<T>(client, url, page) is BaseApiResponse<T> responseResult)
                     {
-                        // Get the result for the next page
-                        responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as MovieEntityApiResponse;
+                        // Determine the type of movie coming through the generic method
+                        DetermineMovieApiResponeType<T>(ref responseResult);
 
-                        // Add the movies of the type coming through the generic method
-                        movies.AddRange(responseResult.Results.Cast<T>().ToList());
+                        List<T> movies = new List<T>();
 
-                        // Write the data to the json file
-                        _fileManager.WriteMovies(movies);
+                        while (page < responseResult.TotalPages)
+                        {
+                            // Get the result for the next page
+                            responseResult = GetPaginatedApiResponse<T>(client, BuildPaginatedUrl(page), page) as BaseApiResponse<T>;
 
-                        // Clear the items out of memory
-                        movies.Clear();
+                            // Add the movies of the type coming through the generic method
+                            movies.AddRange(responseResult.Results.Cast<T>().ToList());
 
-                        // Go to next page
-                        page++;
+                            // Write the data to the json file
+                            _fileManager.WriteMovies(movies);
+
+                            // Clear the items out of memory
+                            movies.Clear();
+
+                            // Go to next page
+                            page++;
+                        }
+
+                        // Get movies from the movie file we wrote to
+                        if (_fileManager.MovieFileExists())
+                            return _fileManager.ReadMovies<T>();
+
+                        throw new Exception("Cannot read requested file.");
                     }
 
-                    // Get movies from the movie file we wrote to
-                    if (_fileManager.MovieFileExists())
-                        return _fileManager.ReadMovies<T>();
-
-                    throw new Exception("Cannot read requested file.");
+                    throw new Exception("Could not get a proper API response from the server.");
                 }
                 catch (Exception e)
                 {
@@ -138,9 +144,9 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
-        public MovieEntityApiResponse DeserializeJsonResponse(string response)
+        public MovieEntityApiResponse<T> DeserializeJsonResponse<T>(string response) where T : IMovie
         {
-            return JsonConvert.DeserializeObject<MovieEntityApiResponse>(response);
+            return JsonConvert.DeserializeObject<MovieEntityApiResponse<T>>(response);
         }
 
         #endregion
@@ -155,6 +161,24 @@ namespace MyDisneyMovies.Core.Utils
         private string BuildPaginatedUrl(int page)
         {
             return $"{Settings.MovieDbBaseUrl}?api_key={Settings.MovieDbApiKey}&language=en-US&query=disney&page={page}&include_adult=false&region=US";
+        }
+
+        /// <summary>
+        /// Detemines the movie API response type.
+        /// </summary>
+        /// <typeparam name="T">The tyep of movie to be determined.</typeparam>
+        /// <param name="response">The reponse from the API.</param>
+        private void DetermineMovieApiResponeType<T>(ref BaseApiResponse<T> response) where T : IMovie
+        {
+            switch (typeof(T).Name)
+            {
+                case nameof(MovieEntity):
+                    response = response as MovieEntityApiResponse<T>;
+                    response.Results.Cast<MovieEntity>().ToList();
+                    break;
+                default:
+                    throw new Exception("Cannot detemine movie type.");
+            }
         }
 
         #endregion

@@ -40,7 +40,7 @@ namespace MyDisneyMovies.Core.Interfaces
         /// <param name="url">The URL to connect to</param>
         /// <param name="page">The page number of the request</param>
         /// <returns></returns>
-        IApiResponse GetPaginatedApiResponse(HttpClient client, string url, int page);
+        IApiResponse GetPaginatedApiResponse<T>(HttpClient client, string url, int page) where T : IMovie;
 
         /// <summary>
         /// Sends an HTTP GET request to fetch a enumerable <see cref="IMovie"/> objects.
