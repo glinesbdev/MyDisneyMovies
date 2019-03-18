@@ -16,7 +16,7 @@ namespace MyDisneyMovies.Core.Entities
         public override double Popularity { get; set; }
 
         [JsonProperty("media_type")]
-        public string MediaType { get; set; }
+        public override string MediaType { get; set; }
 
         [JsonProperty("id")]
         public int Id { get; set; }

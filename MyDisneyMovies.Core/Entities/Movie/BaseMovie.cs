@@ -27,5 +27,10 @@ namespace MyDisneyMovies.Core.Entities
         /// Poster URI of the movie.
         /// </summary>
         public abstract string PosterPath { get; set; }
+
+        /// <summary>
+        /// Type of media for the movie.
+        /// </summary>
+        public abstract string MediaType { get; set; }
     }
 }

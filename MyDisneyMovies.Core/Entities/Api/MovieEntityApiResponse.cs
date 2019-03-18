@@ -12,7 +12,7 @@ namespace MyDisneyMovies.Core.Entities
     /// Specifies the data that we want to get from the API.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class ApiResponseEntity : IApiResponse
+    public class MovieEntityApiResponse : IApiResponse
     {
         [JsonProperty("page")]
         public int Page { get; set; }
@@ -24,6 +24,6 @@ namespace MyDisneyMovies.Core.Entities
         public int TotalPages { get; set; }
 
         [JsonProperty("results")]
-        public List<MovieEntity> Results { get; set; }
+        public IEnumerable<MovieEntity> Results { get; set; }
     }
 }

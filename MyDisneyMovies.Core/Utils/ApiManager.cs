@@ -17,11 +17,6 @@ namespace MyDisneyMovies.Core.Utils
     {
         #region Private Members
 
-        /// <summary>
-        /// Filter out movies by title
-        /// </summary>
-        private List<string> _titleFilters = new List<string> { "Killed" };
-
         private JsonFileManager _fileManager = new JsonFileManager();
 
         #endregion
@@ -32,31 +27,34 @@ namespace MyDisneyMovies.Core.Utils
         /// Async method to get movies from the API
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<IMovie>> GetMoviesAsync<IMovie>()
+        public async Task<IEnumerable<T>> GetMoviesAsync<T>() where T : IMovie
         {
+            // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
             {
-                return await Task.Run(() => HttpGetMovies<IMovie>());
+                // Get the data
+                return await Task.Run(() => HttpGetMovies<T>());
             }
 
-            return await Task.Run(() => _fileManager.ReadMovies<IMovie>());
+            // Otherwise, return the data from the json file
+            return await Task.Run(() => _fileManager.ReadMovies<T>());
         }
 
         /// <summary>
         /// Get movies from the API
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IMovie> GetMovies<IMovie>()
+        public IEnumerable<T> GetMovies<T>() where T : IMovie
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
             {
                 // Get the data
-                return HttpGetMovies<IMovie>();
+                return HttpGetMovies<T>();
             }
 
             // Otherwise, return the data from the json file
-            return _fileManager.ReadMovies<IMovie>();
+            return _fileManager.ReadMovies<T>();
         }
 
         /// <summary>
@@ -78,7 +76,7 @@ namespace MyDisneyMovies.Core.Utils
         /// Gets an enumerable of <see cref="IMovie"/> objects over HTTP.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IMovie> HttpGetMovies<IMovie>()
+        public IEnumerable<T> HttpGetMovies<T>() where T : IMovie
         {
             using (HttpClient client = new HttpClient())
             {
@@ -91,37 +89,31 @@ namespace MyDisneyMovies.Core.Utils
                     string url = BuildPaginatedUrl(page);
 
                     // The API result for the initial page
-                    ApiResponseEntity responseResult = GetPaginatedApiResponse(client, url, page) as ApiResponseEntity;
+                    MovieEntityApiResponse responseResult = GetPaginatedApiResponse(client, url, page) as MovieEntityApiResponse;
 
-                    List<BaseMovie> movies = new List<BaseMovie>();
+                    List<T> movies = new List<T>();
 
                     while (page < responseResult.TotalPages)
                     {
                         // Get the result for the next page
-                        responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as ApiResponseEntity;
+                        responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as MovieEntityApiResponse;
 
-                        // Filter the data to return a more specific result from the API
-                        movies.AddRange(responseResult.Results
-                            .Where(movie => movie.MediaType == "movie")
-                            .Select(movie => { movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}"; return movie; })
-                        );
-
-                        // Filter the movies by title
-                        movies = FilterMovieTitles(movies);
-
-                        // Go to next page
-                        page++;
+                        // Add the movies of the type coming through the generic method
+                        movies.AddRange(responseResult.Results.Cast<T>().ToList());
 
                         // Write the data to the json file
                         _fileManager.WriteMovies(movies);
 
                         // Clear the items out of memory
                         movies.Clear();
+
+                        // Go to next page
+                        page++;
                     }
 
                     // Get movies from the movie file we wrote to
                     if (_fileManager.MovieFileExists(_fileManager.PathToWrittenFile))
-                        return _fileManager.ReadMovies<IMovie>(_fileManager.PathToWrittenFile);
+                        return _fileManager.ReadMovies<T>(_fileManager.PathToWrittenFile);
 
                     throw new Exception($"Cannot read requested file at: {_fileManager.PathToWrittenFile}");
                 }
@@ -146,9 +138,9 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
-        public ApiResponseEntity DeserializeJsonResponse(string response)
+        public MovieEntityApiResponse DeserializeJsonResponse(string response)
         {
-            return JsonConvert.DeserializeObject<ApiResponseEntity>(response);
+            return JsonConvert.DeserializeObject<MovieEntityApiResponse>(response);
         }
 
         #endregion
@@ -163,24 +155,6 @@ namespace MyDisneyMovies.Core.Utils
         private string BuildPaginatedUrl(int page)
         {
             return $"{Settings.MovieDbBaseUrl}?api_key={Settings.MovieDbApiKey}&language=en-US&query=disney&page={page}&include_adult=false&region=US";
-        }
-
-        /// <summary>
-        /// Filter out the movie titles containing words we don't want.
-        /// </summary>
-        /// <param name="movies">List of movies to filter.</param>
-        /// <returns></returns>
-        private List<BaseMovie> FilterMovieTitles(List<BaseMovie> movies)
-        {
-            if (movies.Any())
-            {
-                _titleFilters.ForEach(keyword =>
-                {
-                    movies = movies.Where(movie => !movie.Title.Contains(keyword)).ToList();
-                });
-            }
-
-            return movies;
         }
 
         #endregion

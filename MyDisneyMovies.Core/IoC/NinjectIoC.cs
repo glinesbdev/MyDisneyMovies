@@ -75,7 +75,11 @@ namespace MyDisneyMovies.Core.IoC
         private void BindEntities<T>() where T : IMovie
         {
             ApiManager api = new ApiManager();
-            Kernel.Bind<MovieListEntity>().ToConstant(new MovieListEntity { Movies = api.GetMovies<T>().Cast<IMovie>().ToList() });
+            MovieListEntity movieList = new MovieListEntity { Movies = api.GetMovies<T>().Cast<IMovie>().ToList() };
+
+            movieList.Movies = BaseMovieFilterManager.Filter(movieList.Movies.Cast<BaseMovie>().ToList());
+
+            Kernel.Bind<MovieListEntity>().ToConstant(movieList);
         }
 
         #endregion

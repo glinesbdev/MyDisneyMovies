@@ -63,13 +63,13 @@ namespace MyDisneyMovies.Core.Utils
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
 
                 // Cannot return new IEnumerable so List<T> was chosen as the IEumerable for this implementation
-                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>(BuildFullPath(path, filename, extension)) ?? new List<IMovie>();
+                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>() ?? new List<IMovie>();
 
                 List<IMovie> existingMoviesList = existingMovies.ToList();
                 existingMoviesList.AddRange(movies);
 
                 // Append the Json to the file
-                File.WriteAllText(BuildFullPath(path, filename, extension), JsonConvert.SerializeObject(existingMoviesList));
+                File.WriteAllText(PathToWrittenFile, JsonConvert.SerializeObject(existingMoviesList));
             }
             catch (Exception e)
             {
@@ -88,16 +88,16 @@ namespace MyDisneyMovies.Core.Utils
             try
             {
                 // Open the file to write to
-                if (MovieFileExists(BuildFullPath(path, filename, extension)))
+                if (MovieFileExists())
                 {
-                    using (StreamReader file = File.OpenText(BuildFullPath(path, filename, extension)))
+                    using (StreamReader file = File.OpenText(PathToWrittenFile))
                     {
                         // Return the data read from the file
                         return JsonConvert.DeserializeObject<IMovie[]>(file.ReadToEnd());
                     }
                 }
 
-                throw new Exception($"Cannot find file: {BuildFullPath(path, filename, extension)}");
+                return null;
             }
             catch (Exception e)
             {
