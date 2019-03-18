@@ -31,10 +31,8 @@ namespace MyDisneyMovies.Core.Utils
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
-            {
                 // Get the data
                 return await Task.Run(() => HttpGetMovies<T>());
-            }
 
             // Otherwise, return the data from the json file
             return await Task.Run(() => _fileManager.ReadMovies<T>());
@@ -48,10 +46,8 @@ namespace MyDisneyMovies.Core.Utils
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
-            {
                 // Get the data
                 return HttpGetMovies<T>();
-            }
 
             // Otherwise, return the data from the json file
             return _fileManager.ReadMovies<T>();
@@ -101,8 +97,8 @@ namespace MyDisneyMovies.Core.Utils
                             // Get the result for the next page
                             responseResult = GetPaginatedApiResponse<T>(client, BuildPaginatedUrl(page), page) as BaseApiResponse<T>;
 
-                            // Add the movies of the type coming through the generic method
-                            movies.AddRange(responseResult.Results.Cast<T>().ToList());
+                            // Add the movies to the list
+                            movies.AddRange(responseResult.Results);
 
                             // Write the data to the json file
                             _fileManager.WriteMovies(movies);
