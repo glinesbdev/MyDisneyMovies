@@ -67,7 +67,7 @@
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="IoC\IoCContainer.cs" />
     <Compile Include="IoC\NinjectIoC.cs" />
-    <Compile Include="IoC\TestIoC.cs" />
+    <Compile Include="IoC\DemoOnlyDoNotUseIoC.cs" />
     <Compile Include="Utils\BaseMovieFilterManager.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Enums\ApplicationPage.cs" />

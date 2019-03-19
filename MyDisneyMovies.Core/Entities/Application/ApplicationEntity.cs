@@ -1,4 +1,5 @@
 ﻿using MyDisneyMovies.Core.Enums;
+using MyDisneyMovies.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,16 @@ namespace MyDisneyMovies.Core.Entities
         /// <summary>
         /// The current page of the application
         /// </summary>
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.MoviesList;
+        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.PopularMovies;
 
         /// <summary>
-        /// The current view model of the page when the <see cref="CurrentPage"/> changes.
+        /// The current view model for the <see cref="CurrentPage"/>.
         /// </summary>
         public BaseEntity CurrentPageViewModel { get; set; }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Goes to the a page in the application
@@ -35,7 +40,7 @@ namespace MyDisneyMovies.Core.Entities
             CurrentPageViewModel = viewModel;
 
             // See if page has changed
-            var different = CurrentPage != page;
+            bool different = CurrentPage != page;
 
             // Set the current page
             CurrentPage = page;

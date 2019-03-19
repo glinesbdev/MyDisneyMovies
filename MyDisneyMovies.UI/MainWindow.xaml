@@ -112,6 +112,7 @@
             <!-- Navigation Buttons -->
             <Border Padding="10">
                 <StackPanel Orientation="Horizontal">
+                    <Button Content="Popular Movies" Style="{StaticResource NavigationButton}" />
                     <Button Content="All Movies" Style="{StaticResource NavigationButton}" />
                     <Button Content="My Movies" Style="{StaticResource NavigationButton}" />
                 </StackPanel>

@@ -1,7 +1,9 @@
 ﻿using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.Enums;
 using MyDisneyMovies.Core.Interfaces;
 using MyDisneyMovies.Core.Utils;
 using Ninject;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyDisneyMovies.Core.IoC
@@ -53,7 +55,7 @@ namespace MyDisneyMovies.Core.IoC
             BindDefaultEntities();
 
             if (typeof(IMovie).IsAssignableFrom(typeof(T)))
-                BindEntities<T>();
+                BindIMovieEntities<T>();
         }
 
         /// <summary>
@@ -81,13 +83,40 @@ namespace MyDisneyMovies.Core.IoC
         /// Bind <see cref="IMovie"/> entities to the container.
         /// </summary>
         /// <typeparam name="T">The <see cref="IMovie"/> type.</typeparam>
-        private void BindEntities<T>() where T : IMovie
+        private void BindIMovieEntities<T>() where T : IMovie
         {
             ApiManager api = new ApiManager();
+
+            // Get all movies from the API.
             MovieListEntity movieList = new MovieListEntity { Movies = api.GetMovies<T>().Cast<IMovie>().ToList() };
 
-            movieList.Movies = BaseMovieFilterManager.Filter(movieList.Movies.Cast<BaseMovie>().ToList());
+            // Cast to the correct movie type.
+            List<BaseMovie> baseMovieList = movieList.Movies.Cast<BaseMovie>().ToList();
 
+            // Filter movies by title.
+            movieList.Movies = BaseMovieFilterManager.Filter(baseMovieList);
+
+            // Filter movies by popularity.
+            movieList.PopularMovies = BaseMovieFilterManager.FilterPopular(baseMovieList);
+
+            // TODO: Find a better place for this code
+            // Get the current movie list
+            switch (Get<ApplicationEntity>().CurrentPage)
+            {
+                case ApplicationPage.AllMovies:
+                    movieList.CurrentMovieList = movieList.Movies;
+                    break;
+
+                case ApplicationPage.PopularMovies:
+                    movieList.CurrentMovieList = movieList.PopularMovies;
+                    break;
+
+                default:
+                    movieList.CurrentMovieList = movieList.PopularMovies;
+                    break;
+            }
+
+            // Bind the list of movies to IoC container.
             Kernel.Bind<MovieListEntity>().ToConstant(movieList);
         }
 

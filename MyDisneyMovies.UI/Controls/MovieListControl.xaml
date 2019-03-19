@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="500">    
     <Grid d:DataContext="{x:Static entity:MoviesListDesignViewModel.Instance}" Background="Transparent">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="MovieList" ItemsSource="{Binding Movies}">
+            <ItemsControl x:Name="MovieList" ItemsSource="{Binding CurrentMovieList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <local:MovieControl />

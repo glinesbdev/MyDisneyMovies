@@ -1,23 +1,28 @@
 ﻿namespace MyDisneyMovies.Core.Enums
 {
     /// <summary>
-    /// All of the pages of the application
+    /// All of the pages of the application.
     /// </summary>
     public enum ApplicationPage
     {
         /// <summary>
-        /// No page
+        /// No page.
         /// </summary>
-        None = 0,
+        None,
 
         /// <summary>
-        /// Movies list page
+        /// All movies page.
         /// </summary>
-        MoviesList = 1,
+        AllMovies,
 
         /// <summary>
-        /// My movies page
+        /// Popular movies page.
         /// </summary>
-        MyMovies = 2
+        PopularMovies,
+
+        /// <summary>
+        /// My movies page.
+        /// </summary>
+        MyMovies
     }
 }

@@ -59,6 +59,11 @@ namespace MyDisneyMovies.Core.Utils
             return movies;
         }
 
+        public static IEnumerable<BaseMovie> FilterPopular(IEnumerable<BaseMovie> movies)
+        {
+            return movies.Where(movie => movie.Popularity >= 10.0).ToList();
+        }
+
         #endregion
     }
 }

@@ -25,10 +25,7 @@ namespace MyDisneyMovies.UI.Pages
             set
             {
                 // if the model hasn't changed, do nothing
-                if (_viewModel == value)
-                {
-                    return;
-                }
+                if (_viewModel == value) return;
 
                 _viewModel = value;
 

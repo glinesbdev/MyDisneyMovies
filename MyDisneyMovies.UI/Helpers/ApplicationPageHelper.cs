@@ -25,7 +25,7 @@ namespace MyDisneyMovies.UI.Helpers
             // Find the appropriate page
             switch (page)
             {
-                case ApplicationPage.MoviesList:
+                case ApplicationPage.AllMovies:
                     return new MoviesListPage();
 
                 default:
@@ -43,7 +43,7 @@ namespace MyDisneyMovies.UI.Helpers
         {
             // Find application page that matches the base page
             if (page is MoviesListPage)
-                return ApplicationPage.MoviesList;
+                return ApplicationPage.AllMovies;
 
             // Alert developer of issue
             Debugger.Break();

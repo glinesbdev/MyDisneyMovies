@@ -1,4 +1,6 @@
-﻿using MyDisneyMovies.Core.Enums;
+﻿using MyDisneyMovies.Core.Entities;
+using MyDisneyMovies.Core.Enums;
+using MyDisneyMovies.Core.IoC;
 using MyDisneyMovies.UI.Pages;
 using System;
 using System.Diagnostics;
@@ -16,8 +18,11 @@ namespace MyDisneyMovies.UI.ValueConverters
             // Sets the appropriate page
             switch ((ApplicationPage)value)
             {
-                case ApplicationPage.MoviesList:
+                case ApplicationPage.AllMovies:
                     return new MoviesListPage();
+
+                case ApplicationPage.PopularMovies:
+                    return new PopularMoviesPage();
 
                 case ApplicationPage.MyMovies:
                     return null;
