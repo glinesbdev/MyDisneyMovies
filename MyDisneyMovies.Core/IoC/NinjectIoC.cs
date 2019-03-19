@@ -50,10 +50,19 @@ namespace MyDisneyMovies.Core.IoC
         /// <typeparam name="T">The type of <see cref="IMovie"/> object to get.</typeparam>
         public override void Setup<T>()
         {
-            BindEntities();
+            BindDefaultEntities();
 
             if (typeof(IMovie).IsAssignableFrom(typeof(T)))
                 BindEntities<T>();
+        }
+
+        /// <summary>
+        /// Set up the container before use without any <see cref="IMovie"/> objects.
+        /// NOTE: This must be called before the container can be accessed.
+        /// </summary>
+        public void Setup()
+        {
+            BindDefaultEntities();
         }
 
         #endregion
@@ -63,7 +72,7 @@ namespace MyDisneyMovies.Core.IoC
         /// <summary>
         /// Bind the entties to the container.
         /// </summary>
-        private void BindEntities()
+        private void BindDefaultEntities()
         {
             Kernel.Bind<ApplicationEntity>().ToConstant(new ApplicationEntity());
         }
