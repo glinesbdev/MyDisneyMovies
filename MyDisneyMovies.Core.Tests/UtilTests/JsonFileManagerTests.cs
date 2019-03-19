@@ -23,7 +23,11 @@ namespace MyDisneyMovies.Core.Tests.UtilTests
         {
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
+        }
 
+        [TestInitialize()]
+        public void InitTests()
+        {
             if (!_jsonFileManager.MovieFileExists(directory, file, extension))
                 File.OpenWrite(fullPath);
         }
