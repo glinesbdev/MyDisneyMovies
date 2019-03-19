@@ -26,11 +26,11 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="movies">List of movies to filter.</param>
         /// <returns></returns>
-        private static IEnumerable<BaseMovie> FilterMovieTitles(IEnumerable<BaseMovie> movies)
+        public static IEnumerable<BaseMovie> FilterMovieTitles(IEnumerable<BaseMovie> movies, List<string> titles)
         {
             if (movies.Any())
             {
-                _titleFilters.ForEach(keyword =>
+                titles.ForEach(keyword =>
                 {
                     movies = movies.Where(movie => !movie.Title.Contains(keyword)).ToList();
                 });
@@ -48,13 +48,13 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="movies">The enumerable of movies.</param>
         /// <returns></returns>
-        public static IEnumerable<BaseMovie> Filter(IEnumerable<BaseMovie> movies)
+        public static IEnumerable<BaseMovie> Filter(IEnumerable<BaseMovie> movies, List<string> titles = null)
         {
             movies = movies.Where(movie => movie.MediaType == "movie")
                 .Select(movie => { movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}"; return movie; });
 
             // Filter the movies by title
-            movies = FilterMovieTitles(movies);
+            movies = FilterMovieTitles(movies, titles ?? _titleFilters);
 
             return movies;
         }

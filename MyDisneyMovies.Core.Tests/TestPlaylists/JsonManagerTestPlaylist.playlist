@@ -1,0 +1,5 @@
+<Playlist Version="1.0">
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.ValidateJsonTest" />
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.InvalidJsonTest" />
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.DeserializeJsonResponseTest" />
+</Playlist>

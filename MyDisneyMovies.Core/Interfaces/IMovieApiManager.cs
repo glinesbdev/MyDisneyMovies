@@ -10,14 +10,6 @@ namespace MyDisneyMovies.Core.Interfaces
     public interface IMovieApiManager
     {
         /// <summary>
-        /// Gets a generic response from a GET API call.
-        /// </summary>
-        /// <param name="client">The HTTP client to make the call</param>
-        /// <param name="url">The URL to connect to</param>
-        /// <returns></returns>
-        IApiResponse GetApiResponse(HttpClient client, string url);
-
-        /// <summary>
         /// Wrapper method that checks if the data is already availble.
         /// If the data is not yet availabile, it connects with <see cref="HttpGetMovies"/>
         ///     to fetch the enumerable of <see cref="IMovie"/> objects.

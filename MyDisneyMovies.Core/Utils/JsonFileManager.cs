@@ -20,6 +20,8 @@ namespace MyDisneyMovies.Core.Utils
 
         private readonly string _fileExtension = @".json";
 
+        private readonly string _baseFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "movies.json");
+
         #endregion
 
         #region Public Members
@@ -41,7 +43,7 @@ namespace MyDisneyMovies.Core.Utils
         {
             string fullFilename = (!string.IsNullOrWhiteSpace(filename) && !string.IsNullOrWhiteSpace(extension)) ? $"{filename}{extension}" : $"{_fileName}{_fileExtension}";
 
-            PathToWrittenFile = string.IsNullOrWhiteSpace(directoryPath) ? Settings.MovieDataPath : Path.Combine(directoryPath, fullFilename);
+            PathToWrittenFile = string.IsNullOrWhiteSpace(directoryPath) ? _baseFilePath : Path.Combine(directoryPath, fullFilename);
 
             return PathToWrittenFile;
         }
@@ -63,7 +65,7 @@ namespace MyDisneyMovies.Core.Utils
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
 
                 // Cannot return new IEnumerable so List<T> was chosen as the IEumerable for this implementation
-                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>() ?? new List<IMovie>();
+                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>(path, filename, extension) ?? new List<IMovie>();
 
                 List<IMovie> existingMoviesList = existingMovies.ToList();
                 existingMoviesList.AddRange(movies);
@@ -88,12 +90,13 @@ namespace MyDisneyMovies.Core.Utils
             try
             {
                 // Open the file to write to
-                if (MovieFileExists())
+                if (MovieFileExists(path, filename, extension))
                 {
                     using (StreamReader file = File.OpenText(PathToWrittenFile))
                     {
                         // Return the data read from the file
-                        return JsonConvert.DeserializeObject<IMovie[]>(file.ReadToEnd());
+                        var movies = JsonConvert.DeserializeObject<IMovie[]>(file.ReadToEnd());
+                        return movies;
                     }
                 }
 

@@ -1,0 +1,5 @@
+<Playlist Version="1.0">
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.BuildFullPathTest" />
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.ReadWriteMoviesTest" />
+  <Add Test="MyDisneyMovies.Core.Tests.UtilTests.JsonFileManagerTests.DeleteMoviesFileTest" />
+</Playlist>
