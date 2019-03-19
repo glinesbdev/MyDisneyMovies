@@ -48,7 +48,7 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <param name="movies">The enumerable of movies.</param>
         /// <returns></returns>
-        public static IEnumerable<BaseMovie> Filter(IEnumerable<BaseMovie> movies, List<string> titles = null)
+        public static IEnumerable<BaseMovie> FilterAllMovies(IEnumerable<BaseMovie> movies, List<string> titles = null)
         {
             movies = movies.Where(movie => movie.MediaType == "movie")
                 .Select(movie => { movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}"; return movie; });

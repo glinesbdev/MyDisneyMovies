@@ -87,19 +87,19 @@ namespace MyDisneyMovies.Core.IoC
         {
             ApiManager api = new ApiManager();
 
-            // Get all movies from the API.
-            MovieListEntity movieList = new MovieListEntity { Movies = api.GetMovies<T>().Cast<IMovie>().ToList() };
+            // Get all movies from the API and cast them to the correct movie type.
+            List<BaseMovie> baseMovieList = api.GetMovies<T>().Cast<BaseMovie>().ToList();
 
-            // Cast to the correct movie type.
-            List<BaseMovie> baseMovieList = movieList.Movies.Cast<BaseMovie>().ToList();
+            MovieListEntity movieList = new MovieListEntity
+            {
+                // Run base movie filter
+                Movies = BaseMovieFilterManager.FilterAllMovies(baseMovieList),
 
-            // Filter movies by title.
-            movieList.Movies = BaseMovieFilterManager.Filter(baseMovieList);
+                // Filter movies by popularity.
+                PopularMovies = BaseMovieFilterManager.FilterPopular(baseMovieList)
+            };
 
-            // Filter movies by popularity.
-            movieList.PopularMovies = BaseMovieFilterManager.FilterPopular(baseMovieList);
-
-            // TODO: Find a better place for this code
+            // TODO: Find a better place for this code?
             // Get the current movie list
             switch (Get<ApplicationEntity>().CurrentPage)
             {
