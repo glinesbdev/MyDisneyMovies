@@ -30,15 +30,15 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> GetMoviesAsync<T>() where T : IMovie
+        public async Task<IEnumerable<IMovie>> GetMoviesAsync()
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
                 // Get the data
-                return await Task.Run(() => HttpGetMovies<T>());
+                return await Task.Run(() => HttpGetMovies());
 
             // Otherwise, return the data from the json file
-            return await Task.Run(() => _fileManager.ReadMovies<T>());
+            return await Task.Run(() => _fileManager.ReadMovies());
         }
 
         /// <summary>
@@ -46,15 +46,15 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public IEnumerable<T> GetMovies<T>() where T : IMovie
+        public IEnumerable<IMovie> GetMovies()
         {
             // If we don't already have the data...
             if (!_fileManager.MovieFileExists())
                 // Get the data
-                return HttpGetMovies<T>();
+                return HttpGetMovies();
 
             // Otherwise, return the data from the json file
-            return _fileManager.ReadMovies<T>();
+            return _fileManager.ReadMovies();
         }
 
         /// <summary>
@@ -65,12 +65,12 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="page">The page of data to get for paginated results.</param>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public IApiResponse GetPaginatedApiResponse<T>(HttpClient client, string url, int page) where T : IMovie
+        public IApiResponse GetPaginatedApiResponse(HttpClient client, string url, int page)
         {
             HttpResponseMessage response = client.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
 
-            return _jsonManager.DeserializeJsonResponse<T>(response.Content.ReadAsStringAsync().Result);
+            return _jsonManager.DeserializeJsonResponse(response.Content.ReadAsStringAsync().Result);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public IEnumerable<T> HttpGetMovies<T>() where T : IMovie
+        public IEnumerable<IMovie> HttpGetMovies()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -91,17 +91,14 @@ namespace MyDisneyMovies.Core.Utils
                     string url = BuildPaginatedUrl(page);
 
                     // The API result for the initial page
-                    if (GetPaginatedApiResponse<T>(client, url, page) is BaseApiResponse<T> responseResult)
+                    if (GetPaginatedApiResponse(client, url, page) is BaseApiResponse<MovieEntity> responseResult)
                     {
-                        // Determine the type of movie coming through the generic method
-                        DetermineMovieApiResponeType<T>(ref responseResult);
-
-                        List<T> movies = new List<T>();
+                        List<MovieEntity> movies = new List<MovieEntity>();
 
                         while (page < responseResult.TotalPages)
                         {
                             // Get the result for the next page
-                            responseResult = GetPaginatedApiResponse<T>(client, BuildPaginatedUrl(page), page) as BaseApiResponse<T>;
+                            responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as BaseApiResponse<MovieEntity>;
 
                             // Add the movies to the list
                             movies.AddRange(responseResult.Results);
@@ -118,7 +115,7 @@ namespace MyDisneyMovies.Core.Utils
 
                         // Get movies from the movie file we wrote to
                         if (_fileManager.MovieFileExists())
-                            return _fileManager.ReadMovies<T>();
+                            return _fileManager.ReadMovies();
 
                         throw new Exception("Cannot read requested file.");
                     }
@@ -145,24 +142,6 @@ namespace MyDisneyMovies.Core.Utils
         private string BuildPaginatedUrl(int page)
         {
             return $"{Settings.MovieDbBaseUrl}?api_key={Settings.MovieDbApiKey}&language=en-US&query=disney&page={page}&include_adult=false&region=US";
-        }
-
-        /// <summary>
-        /// Detemines the movie API response type.
-        /// </summary>
-        /// <typeparam name="T">The type of movie.</typeparam>
-        /// <param name="response">The reponse from the API.</param>
-        private void DetermineMovieApiResponeType<T>(ref BaseApiResponse<T> response) where T : IMovie
-        {
-            switch (typeof(T).Name)
-            {
-                case nameof(MovieEntity):
-                    response = response as MovieEntityApiResponse<T>;
-                    response.Results.Cast<MovieEntity>().ToList();
-                    break;
-                default:
-                    throw new Exception("Cannot detemine movie type.");
-            }
         }
 
         #endregion

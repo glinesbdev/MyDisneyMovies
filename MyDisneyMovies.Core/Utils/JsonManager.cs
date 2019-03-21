@@ -31,18 +31,10 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="response">Response from the web server.</param>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public BaseApiResponse<T> DeserializeJsonResponse<T>(string response) where T : IMovie
+        public MovieEntityApiResponse DeserializeJsonResponse(string response)
         {
             if (ValidateJson(response))
-            {
-                switch (typeof(T).Name)
-                {
-                    case nameof(MovieEntity):
-                        return JsonConvert.DeserializeObject<MovieEntityApiResponse<T>>(response);
-                    default:
-                        throw new Exception("Cannot determine movie type");
-                }
-            }
+                return JsonConvert.DeserializeObject<MovieEntityApiResponse>(response);
 
             throw new Exception("Invalid JSON");
         }

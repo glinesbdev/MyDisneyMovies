@@ -55,7 +55,7 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="path">Path to save the file on disk.</param>
         /// <param name="filename">Filename of the file to save.</param>
         /// <param name="extension">The extension of the file.</param>
-        public void WriteMovies<IMovie>(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null)
+        public void WriteMovies(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace MyDisneyMovies.Core.Utils
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Data");
 
                 // Cannot return new IEnumerable so List<T> was chosen as the IEumerable for this implementation
-                IEnumerable<IMovie> existingMovies = ReadMovies<IMovie>(path, filename, extension) ?? new List<IMovie>();
+                IEnumerable<IMovie> existingMovies = ReadMovies(path, filename, extension) ?? new List<IMovie>();
 
                 List<IMovie> existingMoviesList = existingMovies.ToList();
                 existingMoviesList.AddRange(movies);
@@ -85,7 +85,7 @@ namespace MyDisneyMovies.Core.Utils
         /// <param name="path">Path to read the file from on disk.</param>
         /// <param name="filename">Filename to read.</param>
         /// <returns></returns>
-        public IEnumerable<IMovie> ReadMovies<IMovie>(string path = null, string filename = null, string extension = null)
+        public IEnumerable<IMovie> ReadMovies(string path = null, string filename = null, string extension = null)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace MyDisneyMovies.Core.Utils
                     using (StreamReader file = File.OpenText(PathToWrittenFile))
                     {
                         // Return the data read from the file
-                        var movies = JsonConvert.DeserializeObject<IMovie[]>(file.ReadToEnd());
+                        var movies = JsonConvert.DeserializeObject<MovieEntity[]>(file.ReadToEnd());
                         return movies;
                     }
                 }

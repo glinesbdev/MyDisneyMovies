@@ -14,7 +14,7 @@ namespace MyDisneyMovies.Core.Interfaces
         /// <param name="path">The fully qualified path to the file localtion.</param>
         /// <param name="filename">The filename of the file.</param>
         /// <param name="extension">The extension of the file.</param>
-        void WriteMovies<IMovie>(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null);
+        void WriteMovies(IEnumerable<IMovie> movies, string path = null, string filename = null, string extension = null);
 
         /// <summary>
         /// Reads a file and returns a enumerable of <see cref="IMovie"/> objects.
@@ -22,6 +22,6 @@ namespace MyDisneyMovies.Core.Interfaces
         /// <param name="path">The fully qualified path to the file.</param>
         /// <param name="filename">The filename of the file.</param>
         /// <returns></returns>
-        IEnumerable<IMovie> ReadMovies<IMovie>(string path = null, string filename = null, string extension = null);
+        IEnumerable<IMovie> ReadMovies(string path = null, string filename = null, string extension = null);
     }
 }

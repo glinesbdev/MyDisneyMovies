@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyDisneyMovies.Core.Entities;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace MyDisneyMovies.Core.Interfaces
         ///     to fetch the enumerable of <see cref="IMovie"/> objects.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetMovies<T>() where T : IMovie;
+        IEnumerable<IMovie> GetMovies();
 
         /// <summary>
         /// Wrapper method that checks if the data is already available.
@@ -23,7 +24,7 @@ namespace MyDisneyMovies.Core.Interfaces
         ///     to fetch the enumerable of <see cref="IMovie"/> objects asynchronously.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetMoviesAsync<T>() where T : IMovie;
+        Task<IEnumerable<IMovie>> GetMoviesAsync();
 
         /// <summary>
         /// Gets a generic, paginated response from a GET API call.
@@ -32,12 +33,12 @@ namespace MyDisneyMovies.Core.Interfaces
         /// <param name="url">The URL to connect to</param>
         /// <param name="page">The page number of the request</param>
         /// <returns></returns>
-        IApiResponse GetPaginatedApiResponse<T>(HttpClient client, string url, int page) where T : IMovie;
+        IApiResponse GetPaginatedApiResponse(HttpClient client, string url, int page);
 
         /// <summary>
         /// Sends an HTTP GET request to fetch a enumerable <see cref="IMovie"/> objects.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> HttpGetMovies<T>() where T : IMovie;
+        IEnumerable<IMovie> HttpGetMovies();
     }
 }

@@ -26,7 +26,7 @@ namespace MyDisneyMovies.Core.Tests.UtilTests
         [TestMethod]
         public void DeserializeJsonResponseTest()
         {
-            Assert.IsInstanceOfType(_jsonManager.DeserializeJsonResponse<MovieEntity>(JsonManagerTestHelper.ValidJsonBlob), typeof(MovieEntityApiResponse<MovieEntity>));
+            Assert.IsInstanceOfType(_jsonManager.DeserializeJsonResponse(JsonManagerTestHelper.ValidJsonBlob), typeof(MovieEntityApiResponse));
         }
     }
 }

@@ -48,7 +48,7 @@ namespace MyDisneyMovies.Core.Tests.UtilTests
             _jsonFileManager.WriteMovies(JsonFileManagerHelper.Movies, directory, file, extension);
             Assert.IsTrue(_jsonFileManager.MovieFileExists(directory, file, extension));
 
-            List<MovieEntity> movies = _jsonFileManager.ReadMovies<MovieEntity>(directory, file, extension).ToList();
+            List<MovieEntity> movies = _jsonFileManager.ReadMovies(directory, file, extension).Cast<MovieEntity>().ToList();
             Assert.IsTrue(movies.Any());
         }
 

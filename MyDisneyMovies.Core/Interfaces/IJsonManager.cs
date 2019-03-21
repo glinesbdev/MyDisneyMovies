@@ -18,8 +18,8 @@ namespace MyDisneyMovies.Core.Interfaces
         /// Deserializes the JSON into usable data.
         /// </summary>
         /// <param name="response">Response from the web server.</param>
-        /// <typeparam name="T">The type of movie.</typeparam>
+        /// <typeparam name="IMovie">The type of movie.</typeparam>
         /// <returns></returns>
-        BaseApiResponse<T> DeserializeJsonResponse<T>(string response) where T : IMovie;
+        MovieEntityApiResponse DeserializeJsonResponse(string response);
     }
 }

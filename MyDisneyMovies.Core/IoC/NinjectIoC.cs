@@ -88,7 +88,7 @@ namespace MyDisneyMovies.Core.IoC
             ApiManager api = new ApiManager();
 
             // Get all movies from the API and cast them to the correct movie type.
-            List<BaseMovie> baseMovieList = api.GetMovies<T>().Cast<BaseMovie>().ToList();
+            List<BaseMovie> baseMovieList = api.GetMovies().Cast<BaseMovie>().ToList();
 
             MovieListEntity movieList = new MovieListEntity
             {
