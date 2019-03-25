@@ -128,6 +128,7 @@ namespace MyDisneyMovies.Core.Utils
                     {
                         try
                         {
+                            // Write to the database
                             movies.ForEach(movie => ctx.Movies.Add(movie));
                             ctx.SaveChanges();
                         }

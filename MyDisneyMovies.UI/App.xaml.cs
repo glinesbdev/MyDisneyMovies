@@ -3,6 +3,7 @@ using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Enums;
 using MyDisneyMovies.Core.Factories;
 using MyDisneyMovies.Core.IoC;
+using System;
 using System.Windows;
 
 namespace MyDisneyMovies.UI
@@ -21,8 +22,16 @@ namespace MyDisneyMovies.UI
             // Original application start up
             base.OnStartup(e);
 
-            // Set up all of our entities for use
-            IoC.Container.Setup<MovieEntity>();
+            try
+            {
+                // Set up all of our entities for use
+                IoC.Container.Setup<MovieEntity>();
+            }
+            catch (System.Exception exception)
+            {
+                // TODO: Figure out what to do with errors
+                Console.WriteLine(exception.Message);
+            }
 
             // Navigate to the starting page
             //IoC.Get<ApplicationEntity>().GoToPage(ApplicationPage.MoviesList, IoC.Get<MovieListEntity>());
