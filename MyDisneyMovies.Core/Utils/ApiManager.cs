@@ -1,4 +1,5 @@
 ﻿using MyDisneyMovies.Core.Config;
+using MyDisneyMovies.Core.Contexts;
 using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Interfaces;
 using Newtonsoft.Json;
@@ -32,13 +33,21 @@ namespace MyDisneyMovies.Core.Utils
         /// <returns></returns>
         public async Task<IEnumerable<IMovie>> GetMoviesAsync()
         {
-            // If we don't already have the data...
-            if (!_fileManager.MovieFileExists())
-                // Get the data
-                return await Task.Run(() => HttpGetMovies());
+            using (MovieContext ctx = new MovieContext())
+            {
+                // If we don't already have the data...
+                if (!ctx.Movies.Any() && !_fileManager.MovieFileExists())
+                    // Get the data
+                    HttpGetMovies(ctx);
 
-            // Otherwise, return the data from the json file
-            return await Task.Run(() => _fileManager.ReadMovies());
+                // Check if they are in the database after fetching the movies from the API.
+                if (!ctx.Movies.Any())
+                    // Read them from the file if they aren't in the database.
+                    return await Task.Run(() => _fileManager.ReadMovies());
+
+                // Get the movies from the database.
+                return await Task.Run(() => ctx.Movies);
+            }
         }
 
         /// <summary>
@@ -48,13 +57,21 @@ namespace MyDisneyMovies.Core.Utils
         /// <returns></returns>
         public IEnumerable<IMovie> GetMovies()
         {
-            // If we don't already have the data...
-            if (!_fileManager.MovieFileExists())
-                // Get the data
-                return HttpGetMovies();
+            using (MovieContext ctx = new MovieContext())
+            {
+                // If we don't already have the data...
+                if (!ctx.Movies.Any() && !_fileManager.MovieFileExists())
+                    // Get the data
+                    HttpGetMovies(ctx);
 
-            // Otherwise, return the data from the json file
-            return _fileManager.ReadMovies();
+                // Check if they are in the database after fetching the movies from the API.
+                if (!ctx.Movies.Any())
+                    // Read them from the file if they aren't in the database.
+                    return _fileManager.ReadMovies();
+
+                // Get the movies from the database.
+                return ctx.Movies;
+            }
         }
 
         /// <summary>
@@ -78,54 +95,56 @@ namespace MyDisneyMovies.Core.Utils
         /// </summary>
         /// <typeparam name="T">The type of movie.</typeparam>
         /// <returns></returns>
-        public IEnumerable<IMovie> HttpGetMovies()
+        public void HttpGetMovies(MovieContext ctx)
         {
             using (HttpClient client = new HttpClient())
             {
-                try
+                // Starting page for paginated results
+                int page = 1;
+
+                // Initial API url
+                string url = BuildPaginatedUrl(page);
+
+                // The API result for the initial page
+                if (GetPaginatedApiResponse(client, url, page) is MovieEntityApiResponse responseResult)
                 {
-                    // Starting page for paginated results
-                    int page = 1;
+                    List<MovieEntity> movies = new List<MovieEntity>();
+                    bool writeToFile = false;
 
-                    // Initial API url
-                    string url = BuildPaginatedUrl(page);
-
-                    // The API result for the initial page
-                    if (GetPaginatedApiResponse(client, url, page) is BaseApiResponse<MovieEntity> responseResult)
+                    while (page < responseResult.TotalPages)
                     {
-                        List<MovieEntity> movies = new List<MovieEntity>();
+                        // Get the result for the next page
+                        responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as MovieEntityApiResponse;
 
-                        while (page < responseResult.TotalPages)
-                        {
-                            // Get the result for the next page
-                            responseResult = GetPaginatedApiResponse(client, BuildPaginatedUrl(page), page) as BaseApiResponse<MovieEntity>;
+                        // Add the movies to the list
+                        movies.AddRange(responseResult.Results);
 
-                            // Add the movies to the list
-                            movies.AddRange(responseResult.Results);
-
-                            // Write the data to the json file
-                            _fileManager.WriteMovies(movies);
-
-                            // Clear the items out of memory
-                            movies.Clear();
-
-                            // Go to next page
-                            page++;
-                        }
-
-                        // Get movies from the movie file we wrote to
-                        if (_fileManager.MovieFileExists())
-                            return _fileManager.ReadMovies();
-
-                        throw new Exception("Cannot read requested file.");
+                        // Go to next page
+                        page++;
                     }
 
-                    throw new Exception("Could not get a proper API response from the server.");
+                    // Try to put information into the database first.
+                    if (!writeToFile)
+                    {
+                        try
+                        {
+                            movies.ForEach(movie => ctx.Movies.Add(movie));
+                            ctx.SaveChanges();
+                        }
+                        catch
+                        {
+                            // Otherwise, we'll write to the file.
+                            writeToFile = true;
+                        }
+                    }
+                    else
+                    {
+                        // Write the data to the json file
+                        _fileManager.WriteMovies(movies);
+                    }
                 }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
+
+                throw new Exception("Could not get a proper API response from the server.");
             }
         }
 

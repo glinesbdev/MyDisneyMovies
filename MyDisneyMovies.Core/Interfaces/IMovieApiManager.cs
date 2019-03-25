@@ -1,4 +1,5 @@
-﻿using MyDisneyMovies.Core.Entities;
+﻿using MyDisneyMovies.Core.Contexts;
+using MyDisneyMovies.Core.Entities;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -36,9 +37,9 @@ namespace MyDisneyMovies.Core.Interfaces
         IApiResponse GetPaginatedApiResponse(HttpClient client, string url, int page);
 
         /// <summary>
-        /// Sends an HTTP GET request to fetch a enumerable <see cref="IMovie"/> objects.
+        /// Sends an HTTP GET request to fetch movies.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<IMovie> HttpGetMovies();
+        void HttpGetMovies(MovieContext ctx);
     }
 }

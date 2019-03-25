@@ -1,10 +1,9 @@
 ﻿using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Enums;
 using MyDisneyMovies.Core.Interfaces;
+using MyDisneyMovies.Core.Queries;
 using MyDisneyMovies.Core.Utils;
 using Ninject;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MyDisneyMovies.Core.IoC
 {
@@ -87,16 +86,13 @@ namespace MyDisneyMovies.Core.IoC
         {
             ApiManager api = new ApiManager();
 
-            // Get all movies from the API and cast them to the correct movie type.
-            List<BaseMovie> baseMovieList = api.GetMovies().Cast<BaseMovie>().ToList();
-
             MovieListEntity movieList = new MovieListEntity
             {
-                // Run base movie filter
-                Movies = BaseMovieFilterManager.FilterAllMovies(baseMovieList),
+                // Get all the movies
+                Movies = MovieQueries.AllMovies(),
 
-                // Filter movies by popularity.
-                PopularMovies = BaseMovieFilterManager.FilterPopular(baseMovieList)
+                // Get all of the popular movies.
+                PopularMovies = MovieQueries.PopularMovies()
             };
 
             // TODO: Find a better place for this code?

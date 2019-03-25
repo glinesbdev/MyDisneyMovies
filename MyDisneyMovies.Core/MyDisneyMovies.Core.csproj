@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -41,6 +47,7 @@
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Settings.cs" />
+    <Compile Include="Contexts\MovieContext.cs" />
     <Compile Include="Entities\Api\BaseApiResponse.cs" />
     <Compile Include="Entities\Api\MovieEntityApiResponse.cs" />
     <Compile Include="Entities\Application\ApplicationEntity.cs" />
@@ -62,13 +70,14 @@
     <Compile Include="Entities\Movie\BaseMovie.cs" />
     <Compile Include="Entities\Movie\MovieEntity.cs" />
     <Compile Include="Entities\Movie\MovieListEntity.cs" />
+    <Compile Include="Extensions\IEnumerableExtension.cs" />
     <Compile Include="Factories\IoCFactory.cs" />
     <Compile Include="Interfaces\IIoCContainer.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="IoC\IoCContainer.cs" />
     <Compile Include="IoC\NinjectIoC.cs" />
     <Compile Include="IoC\DemoOnlyDoNotUseIoC.cs" />
-    <Compile Include="Utils\BaseMovieFilterManager.cs" />
+    <Compile Include="Queries\MovieQueries.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Enums\ApplicationPage.cs" />
     <Compile Include="Enums\StarRating.cs" />

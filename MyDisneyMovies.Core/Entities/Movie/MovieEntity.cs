@@ -43,7 +43,7 @@ namespace MyDisneyMovies.Core.Entities
         public string FirstAirDate { get; set; }
 
         [JsonProperty("genre_ids")]
-        public List<int> GenreIds { get; set; }
+        public IEnumerable<int> GenreIds { get; set; }
 
         [JsonProperty("original_language")]
         public string OriginalLanguage { get; set; }
@@ -55,7 +55,7 @@ namespace MyDisneyMovies.Core.Entities
         public override string Overview { get; set; }
 
         [JsonProperty("origin_country")]
-        public List<string> OriginCountry { get; set; }
+        public IEnumerable<string> OriginCountry { get; set; }
 
         #endregion
     }
