@@ -2,7 +2,6 @@
 using MyDisneyMovies.Core.Contexts;
 using MyDisneyMovies.Core.Entities;
 using MyDisneyMovies.Core.Interfaces;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

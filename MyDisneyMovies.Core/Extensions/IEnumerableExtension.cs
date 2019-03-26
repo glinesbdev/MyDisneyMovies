@@ -29,7 +29,7 @@ namespace MyDisneyMovies.Core.Extensions
             return movies.Where(movie => !_titleFilters.Contains(movie.Title) && movie.MediaType == "movie")
                 .Select(movie =>
                 {
-                    movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}";
+                    movie.PosterPath = "https://image.tmdb.org/t/p/w500" + $"{movie.PosterPath}";
                     movie.Title = movie.Title ?? "No Title Given";
 
                     // Replace a non-image with the default Mickey Mouse image.
