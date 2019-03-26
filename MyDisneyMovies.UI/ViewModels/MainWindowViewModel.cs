@@ -127,6 +127,12 @@ namespace MyDisneyMovies.UI.ViewModels
             MaximizeWindow = new RelayCommand(() => window.WindowState ^= WindowState.Maximized);
             CloseWindow = new RelayCommand(() => window.Close());
             WindowSystemMenu = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePosition()));
+
+            PopularMoviesNavigation = new RelayCommand(() => IoC.Container.Get<ApplicationEntity>().GoToPage(ApplicationPage.PopularMovies, IoC.Container.Get<MovieListEntity>()));
+
+            AllMoviesNavigation = new RelayCommand(() => IoC.Container.Get<ApplicationEntity>().GoToPage(ApplicationPage.AllMovies, IoC.Container.Get<MovieListEntity>()));
+
+            MyMoviesNavigation = new RelayCommand(() => IoC.Container.Get<ApplicationEntity>().GoToPage(ApplicationPage.MyMovies, IoC.Container.Get<MovieListEntity>()));
         }
 
         #endregion
@@ -140,6 +146,12 @@ namespace MyDisneyMovies.UI.ViewModels
         public ICommand CloseWindow { get; set; }
 
         public ICommand WindowSystemMenu { get; set; }
+
+        public ICommand PopularMoviesNavigation { get; set; }
+
+        public ICommand AllMoviesNavigation { get; set; }
+
+        public ICommand MyMoviesNavigation { get; set; }
 
         #endregion
 

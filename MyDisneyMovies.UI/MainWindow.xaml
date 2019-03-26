@@ -112,9 +112,15 @@
             <!-- Navigation Buttons -->
             <Border Padding="10">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Popular Movies" Style="{StaticResource NavigationButton}" />
-                    <Button Content="All Movies" Style="{StaticResource NavigationButton}" />
-                    <Button Content="My Movies" Style="{StaticResource NavigationButton}" />
+                    <Button Content="Popular Movies"
+                            Style="{StaticResource NavigationButton}"
+                            Command="{Binding PopularMoviesNavigation}" />
+                    <Button Content="All Movies"
+                            Style="{StaticResource NavigationButton}"
+                            Command="{Binding AllMoviesNavigation}"/>
+                    <Button Content="My Movies"
+                            Style="{StaticResource NavigationButton}"
+                            Command="{Binding MyMoviesNavigation}"/>
                 </StackPanel>
             </Border>
 
@@ -124,7 +130,12 @@
             </Border>
 
             <!-- Main content -->
-            <Frame x:Name="MainFrame" Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding Application.CurrentPage, Converter={vc:ApplicationPageValueConverter}}" Background="Transparent" />
+            <Frame x:Name="MainFrame"
+                   Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Content="{Binding Application.CurrentPage, Converter={vc:ApplicationPageValueConverter}}"
+                   Background="Transparent"
+                   NavigationUIVisibility="Hidden"/>
         </Grid>
     </Border>
 </Window>

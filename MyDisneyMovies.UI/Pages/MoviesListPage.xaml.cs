@@ -23,6 +23,7 @@ namespace MyDisneyMovies.UI.Pages
         /// <param name="viewModel"></param>
         public MoviesListPage(MovieListEntity viewModel) : base(viewModel)
         {
+            viewModel.CurrentMovieList = viewModel.Movies;
             InitializeComponent();
         }
 

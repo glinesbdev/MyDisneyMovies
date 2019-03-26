@@ -84,8 +84,6 @@ namespace MyDisneyMovies.Core.IoC
         /// <typeparam name="T">The <see cref="IMovie"/> type.</typeparam>
         private void BindIMovieEntities<T>() where T : IMovie
         {
-            ApiManager api = new ApiManager();
-
             MovieListEntity movieList = new MovieListEntity
             {
                 // Get all the movies

@@ -1,6 +1,4 @@
 ﻿using MyDisneyMovies.Core.Entities;
-using System;
-using System.Linq;
 
 namespace MyDisneyMovies.UI.Pages
 {
@@ -25,6 +23,7 @@ namespace MyDisneyMovies.UI.Pages
         /// <param name="viewModel"></param>
         public PopularMoviesPage(MovieListEntity viewModel) : base(viewModel)
         {
+            viewModel.CurrentMovieList = viewModel.PopularMovies;
             InitializeComponent();
         }
 

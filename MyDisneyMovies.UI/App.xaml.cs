@@ -34,7 +34,7 @@ namespace MyDisneyMovies.UI
             }
 
             // Navigate to the starting page
-            //IoC.Get<ApplicationEntity>().GoToPage(ApplicationPage.MoviesList, IoC.Get<MovieListEntity>());
+            IoC.Container.Get<ApplicationEntity>().GoToPage(ApplicationPage.PopularMovies, IoC.Container.Get<MovieListEntity>());
 
             // Show the main window
             Current.MainWindow = new MainWindow();

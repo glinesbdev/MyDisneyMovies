@@ -2,6 +2,7 @@
 using MyDisneyMovies.Core.Enums;
 using MyDisneyMovies.Core.IoC;
 using MyDisneyMovies.UI.Pages;
+using MyDisneyMovies.UI.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -15,14 +16,16 @@ namespace MyDisneyMovies.UI.ValueConverters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            ApplicationEntity application = ViewModelLocator.Instance.ApplicationEntity;
+
             // Sets the appropriate page
             switch ((ApplicationPage)value)
             {
                 case ApplicationPage.AllMovies:
-                    return new MoviesListPage();
+                    return new MoviesListPage(application.CurrentPageViewModel as MovieListEntity);
 
                 case ApplicationPage.PopularMovies:
-                    return new PopularMoviesPage();
+                    return new PopularMoviesPage(application.CurrentPageViewModel as MovieListEntity);
 
                 case ApplicationPage.MyMovies:
                     return null;

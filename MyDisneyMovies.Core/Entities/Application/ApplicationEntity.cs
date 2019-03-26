@@ -18,7 +18,7 @@ namespace MyDisneyMovies.Core.Entities
         /// <summary>
         /// The current page of the application
         /// </summary>
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.PopularMovies;
+        public ApplicationPage CurrentPage { get; set; }
 
         /// <summary>
         /// The current view model for the <see cref="CurrentPage"/>.

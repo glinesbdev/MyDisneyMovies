@@ -26,11 +26,14 @@ namespace MyDisneyMovies.Core.Extensions
         /// <returns></returns>
         public static IEnumerable<MovieEntity> FilterMovies(this IEnumerable<MovieEntity> movies)
         {
-            return movies.Where(movie => !_titleFilters.Contains(movie.Title))
+            return movies.Where(movie => !_titleFilters.Contains(movie.Title) && movie.MediaType == "movie")
                 .Select(movie =>
                 {
                     movie.PosterPath = $"{Settings.MoviePosterUrl}{movie.PosterPath}";
                     movie.Title = movie.Title ?? "No Title Given";
+
+                    // Replace a non-image with the default Mickey Mouse image.
+                    movie.PosterPath = movie.PosterPath.Split('/').Last() == "w500" ? "https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png" : movie.PosterPath;
 
                     return movie;
                 })

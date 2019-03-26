@@ -1,11 +1,5 @@
-﻿using MyDisneyMovies.Core.Enums;
-using MyDisneyMovies.Core.Interfaces;
-using MyDisneyMovies.Core.Utils;
-using System;
+﻿using MyDisneyMovies.Core.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyDisneyMovies.Core.Entities
 {
@@ -19,6 +13,8 @@ namespace MyDisneyMovies.Core.Entities
 
         private IEnumerable<IMovie> _popularMovies;
 
+        private IEnumerable<IMovie> _currentMovies;
+
         #endregion
 
         #region Public Members
@@ -26,7 +22,15 @@ namespace MyDisneyMovies.Core.Entities
         /// <summary>
         /// Get the list of current movies.
         /// </summary>
-        public IEnumerable<IMovie> CurrentMovieList { get; set; }
+        public IEnumerable<IMovie> CurrentMovieList
+        {
+            get => _currentMovies;
+            set
+            {
+                _currentMovies = value;
+                OnPropertyChanged(nameof(CurrentMovieList));
+            }
+        }
 
         /// <summary>
         /// List of movies.
